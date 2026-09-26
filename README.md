@@ -14,9 +14,9 @@ Text-based tools like Mermaid are lightweight, but they lay out a fixed set of d
 
 ## Examples
 
-The skill picks the closest of 18 built-in templates and follows its layout. If none fits, it draws a new layout.
+18 samples show what the skill can express. They are not templates to fill in: the agent builds each diagram around what it explains, borrowing techniques from the samples.
 
-- **[Template List (18 templates)](docs/samples/en/README.md)**: Architecture diagrams, sequence diagrams, state machines, ER diagrams, before/after UI comparisons, and more.
+- **[Sample List (18 samples)](docs/samples/en/README.md)**: Architecture diagrams, sequence diagrams, state machines, ER diagrams, before/after UI comparisons, and more.
 
 ### AWS Architecture
 
@@ -92,4 +92,4 @@ Outputs from 7 different models (4 Claude and 3 Codex variants) tested with iden
 
 ## License
 
-Released under the [MIT License](LICENSE). AWS icons included in templates and evaluations are subject to the [AWS Architecture Icons Terms](https://aws.amazon.com/architecture/icons/).
+Released under the [MIT License](LICENSE). AWS icons included in samples and evaluations are subject to the [AWS Architecture Icons Terms](https://aws.amazon.com/architecture/icons/).

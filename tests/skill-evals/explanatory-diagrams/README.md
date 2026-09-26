@@ -22,7 +22,7 @@
 - [infra.diff](cases/aws-infra-change/input/infra.diff)
 - [notes.md](cases/aws-infra-change/input/notes.md)
 
-近い見本（skill の中）：[aws-architecture](../../../skills/explanatory-diagrams/templates/aws-architecture/aws-architecture.drawio.svg)、[before-after-diff](../../../skills/explanatory-diagrams/templates/before-after-diff/before-after-diff.drawio.svg)
+関連するサンプル（skill の中）：[aws-architecture](../../../skills/explanatory-diagrams/samples/aws-architecture/aws-architecture.drawio.svg)、[before-after-diff](../../../skills/explanatory-diagrams/samples/before-after-diff/before-after-diff.drawio.svg)
 
 | モデル | effort | 時間 | 費用の目安 | トークン（入力／出力） | ツール | skill | 出力 |
 |---|---|---|---|---|---|---|---|
@@ -281,7 +281,7 @@ PR 本文用の図を [out/product-images-migration.drawio.svg](<workspace>/out/
 <td><img src="cases/design-token-change/input/screenshots/after/orders.png" width="220"><br><code>screenshots/after/orders.png</code></td>
 </tr></table>
 
-近い見本（skill の中）：[design-before-after](../../../skills/explanatory-diagrams/templates/design-before-after/design-before-after.drawio.svg)
+関連するサンプル（skill の中）：[design-before-after](../../../skills/explanatory-diagrams/samples/design-before-after/design-before-after.drawio.svg)
 
 | モデル | effort | 時間 | 費用の目安 | トークン（入力／出力） | ツール | skill | 出力 |
 |---|---|---|---|---|---|---|---|
@@ -530,7 +530,7 @@ PR 本文用の図を [out/state-colors.drawio.svg](<workspace>/out/state-colors
 - [before/（9 ファイル）](cases/refactor-dependency-inversion/input/before)
 - [notes.md](cases/refactor-dependency-inversion/input/notes.md)
 
-近い見本（skill の中）：[before-after-split](../../../skills/explanatory-diagrams/templates/before-after-split/before-after-split.drawio.svg)、[refactor-extract-module](../../../skills/explanatory-diagrams/templates/refactor-extract-module/refactor-extract-module.drawio.svg)
+関連するサンプル（skill の中）：[before-after-split](../../../skills/explanatory-diagrams/samples/before-after-split/before-after-split.drawio.svg)、[refactor-extract-module](../../../skills/explanatory-diagrams/samples/refactor-extract-module/refactor-extract-module.drawio.svg)
 
 | モデル | effort | 時間 | 費用の目安 | トークン（入力／出力） | ツール | skill | 出力 |
 |---|---|---|---|---|---|---|---|

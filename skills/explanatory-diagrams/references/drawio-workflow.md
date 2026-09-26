@@ -43,7 +43,7 @@ python3 -c 'import base64,sys; print("data:image/png," + base64.b64encode(open(s
 - base64 化すると元ファイルサイズの約 1.33 倍になる。数百 KB までは実用上問題ない。大きい画像は縮小するか、必要な範囲だけ切り出してから埋め込む。
 - 書き出した図で、スクリーンショット内の文字が読めるかを確認する。縮小しすぎると文字が潰れる。
 
-画面の前後比較の見本は [templates/design-before-after](../templates/design-before-after/design-before-after.drawio.svg) にある。
+画面の前後比較のサンプルは [samples/design-before-after](../samples/design-before-after/design-before-after.drawio.svg) にある。
 
 他者の画面や資料を取り込むときは、既存図の再利用と同じく出典と利用条件を残す。
 
@@ -64,7 +64,7 @@ python3 -c 'import base64,sys; print("data:image/png," + base64.b64encode(open(s
 - 編集元が埋め込まれるのは、書き出すときに `-e` を付けたときだけ。付けないと、ふつうの画像になる。
 - 埋め込んだ形式からは、どれも同じコマンドで XML を取り出せる（下の「`.drawio.svg` を編集する」）。SVG・PNG・PDF で確かめた。
 
-書き出す前に、XML の `<mxGraphModel>` に `background="#ffffff"` を付ける。ほかの属性はそのまま残す。見本から取り出した XML には、すでに付いている。
+書き出す前に、XML の `<mxGraphModel>` に `background="#ffffff"` を付ける。ほかの属性はそのまま残す。サンプルから取り出した XML には、すでに付いている。
 
 ```xml
 <mxGraphModel background="#ffffff" ...>
@@ -78,7 +78,7 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 
 - `-e` は編集元の XML を SVG に埋め込む。この SVG を draw.io で開くと、元の図として編集できる。SVG 1 つが表示と編集元を兼ねる。
 - `-b` は余白（px）。
-- `--embed-svg-fonts false` を付ける。付けないと、draw.io が文字のラベルを 1 つずつ PNG の画像にして埋め込み、ファイルが大きくなる。見本の 1 枚では、付けると 71KB、付けないと 1.1MB だった。
+- `--embed-svg-fonts false` を付ける。付けないと、draw.io が文字のラベルを 1 つずつ PNG の画像にして埋め込み、ファイルが大きくなる。サンプルの 1 枚では、付けると 71KB、付けないと 1.1MB だった。
 - 白の背景（`background="#ffffff"`）と `--theme light` は両方付ける。
   - 白の背景を付けないと、背景が透明になる。GitHub のダークモードでは、暗い背景に暗い文字が乗って読めなくなる。
   - `--theme light` を付けないと、色が `light-dark()` で見る人の配色に合わせて変わり、描いた色のとおりに表示されない。
@@ -99,7 +99,7 @@ PNG と PDF は、次のように書き出す。白の背景と `--theme light` 
 
 ## `.drawio.svg` を編集する
 
-テンプレートや既存の図を XML で編集するときは、`.drawio.svg` から XML を取り出し、編集後に `.drawio.svg` へ書き出し直す。
+既存の図を XML で編集するときは、`.drawio.svg` から XML を取り出し、編集後に `.drawio.svg` へ書き出し直す。サンプルの XML を読むときも、同じコマンドで取り出す。
 
 ```bash
 /Applications/draw.io.app/Contents/MacOS/draw.io -x -f xml -o fig.drawio fig.drawio.svg

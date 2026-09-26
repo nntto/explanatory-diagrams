@@ -13,4 +13,4 @@
 
 デスクトップ版の CLI で書き出すと、画像のパスで指定する Google Cloud の新しいアイコン（`img/lib/google_cloud/...`）は表示されない。Google Cloud は `mxgraph.gcp2` の図形を使う。
 
-ローカルの見本には、[AWS 構成図](../templates/aws-architecture/aws-architecture.drawio.svg)、[C4 コンテナ図](../templates/c4-container/c4-container.drawio.svg)、[ER 図](../templates/er-diagram/er-diagram.drawio.svg)、[業務フロー](../templates/business-flow/business-flow.drawio.svg)がある。
+ローカルのサンプルには、[AWS 構成図](../samples/aws-architecture/aws-architecture.drawio.svg)、[C4 コンテナ図](../samples/c4-container/c4-container.drawio.svg)、[ER 図](../samples/er-diagram/er-diagram.drawio.svg)、[業務フロー](../samples/business-flow/business-flow.drawio.svg)がある。

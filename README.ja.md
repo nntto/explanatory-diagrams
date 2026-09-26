@@ -14,23 +14,23 @@ Mermaid などのテキスト記述は手軽ですが、決まった種類の図
 
 ## 作図例
 
-18 種類のテンプレートから目的に近いものを選び、その構図に沿って作図します。合うものがなければ、新しい構図で描きます。
+どんな表現ができるかを、18 枚のサンプルで示しています。サンプルは当てはめる型ではありません。説明する内容に合わせて図を組み立て、サンプルの表現を取り入れて描きます。
 
-- **[テンプレート一覧（全 18 種）](skills/explanatory-diagrams/templates/README.md)**：インフラ構成図、シーケンス図、状態遷移図、ER 図、UI 変更の比較図など
+- **[サンプル一覧（全 18 枚）](skills/explanatory-diagrams/samples/README.md)**：インフラ構成図、シーケンス図、状態遷移図、ER 図、UI 変更の比較図など
 
 ### インフラ構成図
 
 2 つのアベイラビリティゾーン（AZ）にまたがる注文 API の冗長構成です。リクエストの流れに番号を振って順に追えるようにし、RDS からスタンバイへの同期複製も示しています。
 
-![注文 API を 2 つの AZ に分散配置した AWS 構成図。ALB がリクエストを振り分け、RDS はスタンバイへ同期複製を行う](skills/explanatory-diagrams/templates/aws-architecture/aws-architecture.drawio.svg)
+![注文 API を 2 つの AZ に分散配置した AWS 構成図。ALB がリクエストを振り分け、RDS はスタンバイへ同期複製を行う](skills/explanatory-diagrams/samples/aws-architecture/aws-architecture.drawio.svg)
 
 ### UI の変更比較
 
 テーマカラー変更前後の画面比較です。変更箇所を枠線で囲み、枠番号と下部の対比表を紐付けることで、どのスタイル値がどう変わったかをひと目で確認できます。
 
-![日付範囲の塗り、フォーカスリング、リンクボタンの変更箇所を変更前後で対比した UI 比較図](skills/explanatory-diagrams/templates/design-before-after/design-before-after.drawio.svg)
+![日付範囲の塗り、フォーカスリング、リンクボタンの変更箇所を変更前後で対比した UI 比較図](skills/explanatory-diagrams/samples/design-before-after/design-before-after.drawio.svg)
 
-※ 上記の見本は人間が調整した基準データです。自動生成による実際の出力は [モデル別の検証結果](tests/skill-evals/explanatory-diagrams/README.md) を参照してください。
+※ 上記のサンプルは人間が調整した基準データです。自動生成による実際の出力は [モデル別の検証結果](tests/skill-evals/explanatory-diagrams/README.md) を参照してください。
 
 ## 必要な環境
 
@@ -94,4 +94,4 @@ ln -s "$PWD/explanatory-diagrams/skills/explanatory-diagrams" ~/.agents/skills/e
 
 ## ライセンス
 
-[MIT License](LICENSE) のもとで公開しています。ただし、見本テンプレートおよび評価結果に含まれる AWS アイコンは本ライセンスの対象外であり、[AWS アイコンの利用規約](https://aws.amazon.com/architecture/icons/) に従います。
+[MIT License](LICENSE) のもとで公開しています。ただし、サンプルおよび評価結果に含まれる AWS アイコンは本ライセンスの対象外であり、[AWS アイコンの利用規約](https://aws.amazon.com/architecture/icons/) に従います。
