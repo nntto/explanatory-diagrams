@@ -1,6 +1,6 @@
 ---
 name: explanatory-diagrams
-description: PR 本文・設計ドキュメント・レビュー返信で、変更前後、システム構成、データモデル、状態の置き場、集合と要素の対応などを図で説明するときに使う。draw.io の図形選び、配色・記法・サンプル、SVG の書き出しを扱う。「図にして」「図解して」「前後を図で示して」といった依頼で使う。
+description: "Explains changes and systems with diagrams: before/after comparisons, architecture, data models, where state lives, and how items map to sets. Use when asked to draw, diagram, or visualize something for a PR description, design doc, or review reply. Draws with draw.io and returns an image with its editable source embedded, so the diagram can be edited later."
 ---
 
 # 図解で説明する
