@@ -52,7 +52,17 @@ python3 -c 'import base64,sys; print("data:image/png," + base64.b64encode(open(s
 
 ## 書き出し
 
-図は、編集元の XML を埋め込んだ SVG（`.drawio.svg`）1 つで渡す。表示用の画像と編集用の `.drawio` を別々に残さない。
+図は、編集元の XML を埋め込んだ画像 1 つで渡す。表示用の画像と編集用の `.drawio` を別々に残さない。ふつうは SVG（`.drawio.svg`）で渡す。
+
+| 形式 | 拡張子 | 編集元の埋め込み | 使う場面 |
+|---|---|---|---|
+| SVG | `.drawio.svg` | できる | ふつうはこれ。拡大してもにじまない |
+| PNG | `.drawio.png` | できる | SVG を貼れない場所に貼るとき |
+| PDF | `.drawio.pdf` | できる | 文書に添えるときや、印刷するとき |
+| JPG | `.jpg` | できない | 編集元が残らないので使わない |
+
+- 編集元が埋め込まれるのは、書き出すときに `-e` を付けたときだけ。付けないと、ふつうの画像になる。
+- 埋め込んだ形式からは、どれも同じコマンドで XML を取り出せる（下の「`.drawio.svg` を編集する」）。SVG・PNG・PDF で確かめた。
 
 書き出す前に、XML の `<mxGraphModel>` に `background="#ffffff"` を付ける。ほかの属性はそのまま残す。見本から取り出した XML には、すでに付いている。
 
@@ -77,6 +87,16 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 - 書き出した図をブラウザで開き、文字と線の読みやすさ、説明する対象の対応・個数・関係が保たれていることを確認する。macOS の Quick Look のサムネイルは図の端を切り落とすので、確認に使わない。
 - XML の `fig.drawio` は書き出し用の中間ファイル。書き出した後は残さない。
 
+PNG と PDF は、次のように書き出す。白の背景と `--theme light` は SVG と同じく付ける。
+
+```bash
+/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -b 20 --theme light -o fig.drawio.png fig.drawio
+/Applications/draw.io.app/Contents/MacOS/draw.io -x -f pdf -e --crop -b 20 --theme light -o fig.drawio.pdf fig.drawio
+```
+
+- PNG の `-s 2` は 2 倍の大きさで書き出す。拡大したときににじみにくい。
+- PDF の `--crop` は、ページを図の大きさに切り詰める。付けないと、図がレターサイズ（612×792pt）のページに置かれる。
+
 ## `.drawio.svg` を編集する
 
 テンプレートや既存の図を XML で編集するときは、`.drawio.svg` から XML を取り出し、編集後に `.drawio.svg` へ書き出し直す。
@@ -86,6 +106,8 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 # fig.drawio を編集する
 /Applications/draw.io.app/Contents/MacOS/draw.io -x -f svg -e -b 20 --embed-svg-fonts false --theme light -o fig.drawio.svg fig.drawio
 ```
+
+PNG と PDF も、`fig.drawio.svg` を `fig.drawio.png` や `fig.drawio.pdf` に替えれば、同じコマンドで XML を取り出せる。
 
 取り出した XML は、属性の順序や `x="0"` の省略など表記が変わることがあるが、図の内容は変わらない。
 
