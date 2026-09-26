@@ -14,9 +14,9 @@
 
 ## 示例
 
-Skill 会从 18 种模板中选出最接近的一种，按照其版式作图；没有合适的模板时，会用新的版式绘制。
+18 个样例展示了这个 skill 能画出的表现方式。样例不是套用的模板：agent 会根据要说明的内容来组织图，并借鉴样例中的表现方式。
 
-- **[模板列表（共 18 种）](docs/samples/zh-CN/README.md)**：架构图、时序图、状态机图、ER 图、UI 变更对比图等。
+- **[样例列表（共 18 个）](docs/samples/zh-CN/README.md)**：架构图、时序图、状态机图、ER 图、UI 变更对比图等。
 
 ### 架构图
 
@@ -94,4 +94,4 @@ ln -s "$PWD/explanatory-diagrams/skills/explanatory-diagrams" ~/.agents/skills/e
 
 ## 许可证
 
-本项目基于 [MIT 许可证](LICENSE) 开源。模板与评测样例中包含的 AWS 图标不适用本许可证，须遵守 [AWS 架构图标使用条款](https://aws.amazon.com/architecture/icons/)。
+本项目基于 [MIT 许可证](LICENSE) 开源。样例与评测结果中包含的 AWS 图标不适用本许可证，须遵守 [AWS 架构图标使用条款](https://aws.amazon.com/architecture/icons/)。

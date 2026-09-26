@@ -1,7 +1,7 @@
 {
   "name": "mock-admin-ui",
   "private": true,
-  "description": "explanatory-diagrams の見本と eval の入力画像を撮るための、架空の雑貨店の管理画面",
+  "description": "explanatory-diagrams のサンプルと eval の入力画像を撮るための、架空の雑貨店の管理画面",
   "scripts": {
     "shoot": "node shoot.js shots"
   },

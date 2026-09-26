@@ -33,7 +33,7 @@ python3 tests/skill-evals/run_skill_eval.py run explanatory-diagrams
 - `--model opus-5.5 gpt-6-sol` のように、`suite.json` の `models[].id` で絞れる。
 - `--case 'design-*'` でケースを絞れる。
 - `--jobs` は同時に動かす数（既定 3）。Claude の実行はどれも同じ利用上限を使う。
-- 結果は `explanatory-diagrams/results/<日時>/` に出る。そこの `README.md` に、依頼文と入力、近い見本、モデルごとの出力の図・時間・費用・skill を読んだかが、公開ページと同じ書き方で並ぶ。
+- 結果は `explanatory-diagrams/results/<日時>/` に出る。そこの `README.md` に、依頼文と入力、関連するサンプル、モデルごとの出力の図・時間・費用・skill を読んだかが、公開ページと同じ書き方で並ぶ。
 - 結果のページだけを作り直すときは `run_skill_eval.py report <結果のディレクトリ>`。
 
 `results/` はコミットしない。残したい結果は `publish` で `explanatory-diagrams/outputs/` に写し、[explanatory-diagrams/README.md](explanatory-diagrams/README.md) を作り直してからコミットする。写すのは各モデルが `out/` に置いたファイルと、時間・費用・最後の返答などの記録（`runs.json`）。やり取りの記録（`transcript.jsonl`）は大きいので写さない。
@@ -46,7 +46,7 @@ python3 tests/skill-evals/run_skill_eval.py publish tests/skill-evals/explanator
 - 依頼文・入力・skill の中身のどれかが公開済みの結果と違うときは、混ぜずに止まる。
 - 依頼文・入力・skill を直したら、全モデルを実行し直す。最初の publish の前に一度だけ `outputs/<case>/` を消す。Claude と Codex を別々に publish するときも、消すのは 1 回でよい。同じ依頼文・入力・skill で実行した結果は、止まらずに並ぶ。
 - 最後の返答に残る、実行ごとの一時ディレクトリの絶対パスは、`<workspace>` に置き換えて写す。
-- 出力を skill のフォルダに置かないのは、skill と一緒に配られるのを避けるためと、次の eval でモデルが見本と取り違えて写さないようにするため。
+- 出力を skill のフォルダに置かないのは、skill と一緒に配られるのを避けるためと、次の eval でモデルがサンプルと取り違えて写さないようにするため。
 
 Claude Code に組み込みの `claude plugin eval` でも、同じケースを実行できる（Claude のモデルだけ）。ケースはその形式（`prompt.md`、`case.yaml`、`graders/`）で書いてある。合格条件は、Skill ツールを使ったこと（`graders/skill-used.md`）と、`out/` に `.drawio.svg` があること（`graders/diagram-svg.md`）。
 
@@ -57,13 +57,13 @@ python3 tests/skill-evals/run_skill_eval.py official explanatory-diagrams --mode
 ## ケースを足す
 
 1. `explanatory-diagrams/cases/<case>/` を作り、`prompt.md`（frontmatter と依頼文）、`case.yaml`、`setup.sh`、`input/`、`graders/` を置く。既存のケースを複製するのが早い。
-2. 近い見本があれば、`suite.json` の `cases.<case>.references` に skill の中のパス（`templates/<name>/<name>.drawio.svg`）を書く。結果のページと公開ページに、近い見本として載る。
+2. 関連するサンプルがあれば、`suite.json` の `cases.<case>.references` に skill の中のパス（`samples/<name>/<name>.drawio.svg`）を書く。結果のページと公開ページに、関連するサンプルとして載る。
 3. `setup.sh` が `input/` をそのまま写すだけでないときは、作業場所に何を置くかを `suite.json` の `cases.<case>.workspace` に書く。README の入力の欄に載る。たとえば `refactor-dependency-inversion` は、`input/before` と `input/after` から git リポジトリを組み立て、モデルには main との差分を読ませている。
 4. 入力には実在の会社・人・業務の資料を使わず、架空の題材にする。画面の画像が必要なら、`sources/mock-admin-ui/` のような架空の画面から撮る。
 
 ## 画面の画像の作り方
 
-`explanatory-diagrams/sources/mock-admin-ui/` は、AntD で作った架空の雑貨店の管理画面である。ケース `design-token-change` の入力画像と、skill の見本 `design-before-after` はここから撮った。店、人名、住所、電話番号、注文は、すべて架空のものである。ケースの入力（`cases/*/input/`）にある人名・住所・数値・業務のルールも架空である。
+`explanatory-diagrams/sources/mock-admin-ui/` は、AntD で作った架空の雑貨店の管理画面である。ケース `design-token-change` の入力画像と、skill のサンプル `design-before-after` はここから撮った。店、人名、住所、電話番号、注文は、すべて架空のものである。ケースの入力（`cases/*/input/`）にある人名・住所・数値・業務のルールも架空である。
 
 ```bash
 cd tests/skill-evals/explanatory-diagrams/sources/mock-admin-ui
