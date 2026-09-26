@@ -36,7 +36,6 @@ A comparison of interface styles before and after a theme color update. Modified
 
 - **draw.io Desktop**: Used to export diagrams to SVG (expects standard macOS application path).
 - **Python 3**: Used to embed screenshot images into the SVG payload.
-- **GitHub CLI (`gh`)**: Used when attaching generated diagrams to Pull Requests.
 
 If running inside an OS sandbox, refer to [Sandbox Configuration](docs/sandbox.md).
 

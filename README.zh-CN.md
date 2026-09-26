@@ -38,7 +38,6 @@ Skill 会从 18 种模板中选出最接近的一种，按照其版式作图；�
 
 - **draw.io 桌面版**：用于将图表导出为 SVG（默认使用 macOS 应用程序路径）。
 - **Python 3**：用于将截图等位图嵌入到 SVG 载荷中。
-- **GitHub CLI（`gh`）**：用于将生成的图表直接附加到 Pull Request。
 
 在沙箱环境中运行时，请参考 [沙箱环境配置](docs/sandbox.zh-CN.md)。
 

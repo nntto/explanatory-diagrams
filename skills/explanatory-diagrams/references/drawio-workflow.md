@@ -1,4 +1,4 @@
-# draw.io での画像の取り込み・書き出し・貼り付け
+# draw.io での画像の取り込み・書き出し
 
 ## 既存図の再利用
 
@@ -90,24 +90,3 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 取り出した XML は、属性の順序や `x="0"` の省略など表記が変わることがあるが、図の内容は変わらない。
 
 数値から決まる境界や探索経路などを示す場合は、図が示す条件と結果を原典や計算で確かめる。確認できない主張は、根拠のある範囲へ修正するか、図から外す。
-
-## PR への貼り付け
-
-- 本文は `--body-file`、画像は `--attach` で渡す。本文中の同じローカルパスの画像参照は、アップロード先の URL に置き換わる。
-- 添付するのは `.drawio.svg`。編集元は SVG に含まれるため、`.drawio` の XML を本文に同梱しない。`--attach` は画像と動画しか受け付けず、`.drawio` は渡せない。
-- GitHub は、PR やコメントへの SVG の添付に対応している。ただし、`gh pr edit --attach` で SVG を渡せるかは確かめていない（help には image or video とある）。
-
-```bash
-gh pr edit -R <owner/repo> <number> --body-file body.md --attach './fig.drawio.svg#alt'
-```
-
-- gh が 0 以外で終わったら、添付に失敗したものがある。help によると、このとき PR は成功した添付だけで更新される。SVG を渡せなかったときは、本文の画像の参照を `./fig.drawio.png` に替え、`.drawio.svg` から PNG を書き出して貼り直す。
-
-```bash
-/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -b 20 -o fig.drawio.png fig.drawio.svg
-gh pr edit -R <owner/repo> <number> --body-file body.md --attach './fig.drawio.png#alt'
-```
-
-- `-s 2` は 2 倍の大きさで書き出す。拡大したときににじみにくい。
-- `.drawio.svg` はリポジトリにコミットしない。設計ドキュメントとして残す場合だけ、`docs/` 配下に `.drawio.svg` を置く。
-- scratchpad などリポジトリ外から実行するときは `-R` が必要。
