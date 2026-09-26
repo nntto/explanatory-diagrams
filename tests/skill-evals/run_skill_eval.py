@@ -344,8 +344,13 @@ def image_hashes(root: Path) -> dict:
 
 
 def scrub_paths(text: str) -> str:
-    """最後の返答に残る、実行ごとの一時ディレクトリの絶対パスを <workspace> に置き換える（マシン固有の情報を公開しない）。"""
-    return re.sub(r"(?:/private)?(?:/var/folders/[^\s)`\]]*?|/tmp)/work-[^/\s)`\]]+/work", "<workspace>", text)
+    """最後の返答に残る、実行ごとの一時ディレクトリの絶対パスを <workspace> に置き換える（マシン固有の情報を公開しない）。
+
+    Markdown のリンク先を `(</abs/.../out/a.svg>)` のように山かっこで囲んだパスは、囲みごと置き換える。
+    パスの前半だけを置き換えると `<<workspace>/out/a.svg>` になるため。山かっこの中はスペースを含んでよい。"""
+    workspace = r"(?:/private)?(?:/var/folders/[^\s)`\]]*?|/tmp)/work-[^/\s)`\]]+/work"
+    text = re.sub(rf"<{workspace}([^<>\n]*)>", r"<workspace>\1", text)
+    return re.sub(workspace, "<workspace>", text)
 
 
 def token_counts(vendor: str, usage: dict | None) -> tuple[int | None, int | None]:
