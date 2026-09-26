@@ -2,48 +2,70 @@
 
 # explanatory-diagrams
 
-PR の説明や設計ドキュメントに載せる図を、コーディングエージェント（Claude Code、Codex）に draw.io で描かせる skill です。差分やメモ、画面の画像などを渡して頼むと、エージェントが図を描き、draw.io の編集データを埋め込んだ SVG（`.drawio.svg`）を返します。この SVG はふつうの画像として貼れて、draw.io で開けばそのまま直せます。
+差分テキストや設計メモ、画面キャプチャを渡すだけで、draw.io 形式の説明図を生成するスキルです。出力形式には、編集データを内包した SVG（`.drawio.svg`）を採用しています。Markdown には通常の画像としてそのまま貼り付けられ、配置の微調整や文言の変更が必要になったときは、draw.io で開いてそのまま手直しできます。エージェントに頼んで直してもらうこともできます。
 
-## 見本
+## なぜ draw.io なのか
 
-**[見本の一覧（18 枚）](skills/explanatory-diagrams/templates/README.md)** に、変更前後の比べ方、リファクタリングの説明、構成図・シーケンス図・状態遷移図・ER 図などの見本を、使う場面と一緒に並べています。エージェントはこの一覧から近い見本を選び、その体裁に沿って描きます。
+表現の幅、文字と構造の正確さ、あとからの直しやすさを両立させるための選択です。
 
-**AWS の構成図**：注文 API を 2 つのアベイラビリティゾーン（AZ）に置き、片方が止まっても注文を受け付けられるようにした構成です。リクエストの流れに、順に番号を振っています。
+![Mermaid・画像生成・draw.io の比較表](docs/why-drawio.ja.drawio.svg)
 
-![注文 API を 2 つの AZ に置いた AWS 構成図。ALB が 2 つの AZ にリクエストを振り分け、RDS はスタンバイへ同期複製する](skills/explanatory-diagrams/templates/aws-architecture/aws-architecture.drawio.svg)
+Mermaid などのテキスト記述は手軽ですが、決まった種類の図を自動で配置するため、描ける構図に制約があります。一方で画像生成 AI の出力は、見た目が整っていても細かい文字や線が指示とずれることがあり、一部だけ直すのも難しくなります。draw.io であれば、図形・アイコン・画面の画像を好きな位置に置けて、あとから一部だけ直せます。代わりに、差分は draw.io の XML になって読みにくく、draw.io のデスクトップ版が必要です。
 
-**画面を並べてデザインの変化を比べる**：テーマの色を変えた前後の画面を並べています。変わった部品を橙の枠で囲み、枠の番号で下の表の値と対応づけています。
+## 作図例
 
-![日付範囲の塗り、入力欄のフォーカスの輪、link ボタンの文字色を店の色に揃える変更を、変更前後の画面と値の表で比べた図](skills/explanatory-diagrams/templates/design-before-after/design-before-after.drawio.svg)
+18 種類のテンプレートから目的に近いものを選び、その構図に沿って作図します。合うものがなければ、新しい構図で描きます。
 
-見本は人が仕上げたものです。エージェントが実際に返した図は[モデルごとの出力](#モデルごとの出力)にあります。
+- **[テンプレート一覧（全 18 種）](skills/explanatory-diagrams/templates/README.md)**：インフラ構成図、シーケンス図、状態遷移図、ER 図、UI 変更の比較図など
 
-## なぜ draw.io で描くのか
+### インフラ構成図
 
-![Mermaid・画像生成・draw.io を比べた表](docs/why-drawio.ja.drawio.svg)
+2 つのアベイラビリティゾーン（AZ）にまたがる注文 API の冗長構成です。リクエストの流れに番号を振って順に追えるようにし、RDS からスタンバイへの同期複製も示しています。
 
-## 入れ方
+![注文 API を 2 つの AZ に分散配置した AWS 構成図。ALB がリクエストを振り分け、RDS はスタンバイへ同期複製を行う](skills/explanatory-diagrams/templates/aws-architecture/aws-architecture.drawio.svg)
 
-同じエージェントには、次のうち 1 つの方法で入れてください。
+### UI の変更比較
 
-### A. skills CLI（おすすめ）
+テーマカラー変更前後の画面比較です。変更箇所を枠線で囲み、枠番号と下部の対比表を紐付けることで、どのスタイル値がどう変わったかをひと目で確認できます。
+
+![日付範囲の塗り、フォーカスリング、リンクボタンの変更箇所を変更前後で対比した UI 比較図](skills/explanatory-diagrams/templates/design-before-after/design-before-after.drawio.svg)
+
+※ 上記の見本は人間が調整した基準データです。自動生成による実際の出力は [モデル別の検証結果](tests/skill-evals/explanatory-diagrams/README.md) を参照してください。
+
+## 必要な環境
+
+以下のツールを利用します。
+
+- **draw.io（デスクトップ版）**：図を SVG へ書き出す際に使用（macOS の標準アプリケーションパスを想定）。
+- **Python 3**：キャプチャ画像を SVG 内に埋め込む前処理に使用。
+- **GitHub CLI（`gh`）**：生成した図を Pull Request に添付する際に使用。
+
+サンドボックス環境で動かす場合は、[サンドボックスの設定手順](docs/sandbox.ja.md) を確認してください。
+
+## インストール
+
+利用環境に合わせて、以下のいずれか 1 つの方法で導入します。
+
+### 1. skills CLI（推奨）
 
 ```sh
 npx skills@latest add nntto/explanatory-diagrams --skill explanatory-diagrams -g -a claude-code -a codex
 ```
 
-`-g` を外すと、今のプロジェクトだけに入ります。
+現在のプロジェクトにのみ適用する場合は `-g` を外します。
 
-### B. Claude Code のプラグイン
+### 2. Claude Code プラグイン
 
 ```sh
 claude plugin marketplace add nntto/explanatory-diagrams
 claude plugin install explanatory-diagrams@nntto
 ```
 
-Claude Code 2.1.142 以降が必要です。
+※ Claude Code 2.1.142 以降が必要です。
 
-### C. 手で置く
+### 3. 手動配置
+
+リポジトリを取得し、スキルの配置先へシンボリックリンクを作成します。
 
 ```sh
 git clone https://github.com/nntto/explanatory-diagrams.git
@@ -52,30 +74,25 @@ ln -s "$PWD/explanatory-diagrams/skills/explanatory-diagrams" ~/.claude/skills/e
 ln -s "$PWD/explanatory-diagrams/skills/explanatory-diagrams" ~/.agents/skills/explanatory-diagrams
 ```
 
-## 必要なもの
-
-- **draw.io のデスクトップ版**：図を SVG に書き出すときに使います。skill のコマンドは macOS のパスで書いています。
-- **python3**：画面の画像を図に埋め込むときに使います。
-- **gh**：図を PR に貼るときに使います。
-
-エージェントを OS のサンドボックスの中で動かしている場合は、[サンドボックスの設定](docs/sandbox.ja.md)も必要です。
-
 ## 使い方
 
-図にしたいものをふだんの言葉で頼めば、エージェントがこの skill を読み込みます。
+作図のもとになる資料（差分、メモ、画像）を指定し、ふだんの言葉で指示を出します。
 
-- 「この PR の変更を、PR の説明に載せる図にして。main との差分を見て。」
-- 「infra.diff をもとに、構成の変更を図にして。」
-- 「変更前後の画面の画像から、色の変更を比べる図を作って。」
+- 「この PR の変更内容を説明する図を作って。main ブランチとの差分を見て。」
+- 「infra.diff をもとに、インフラ構成の変更図を描いて。」
+- 「変更前後のスクリーンショットをもとに、UI カラーの変更箇所を比べる図を作って。」
 
-skill を指定して呼ぶときは、Claude Code では `/explanatory-diagrams`（プラグインとして入れた場合は `/explanatory-diagrams:explanatory-diagrams`）、Codex では `$explanatory-diagrams` と入力します。
+明示的にスキルを指定して呼び出す構文も利用できます。
 
-図の文言は、図を載せる文書の言語で書かれます。
+- Claude Code：`/explanatory-diagrams`（プラグイン導入時は `/explanatory-diagrams:explanatory-diagrams`）
+- Codex：`$explanatory-diagrams`
 
-## モデルごとの出力
+図の中のテキストは、図を載せる文書の言語に合わせて出力されます。
 
-同じ依頼と資料を 7 つのモデル（Claude の 4 つと Codex の 3 つ）に渡したときの出力を、[出力のページ](tests/skill-evals/explanatory-diagrams/README.md)に並べています。
+## モデル別の出力結果
+
+7 つのモデル（Claude 系 4 種、Codex 系 3 種）に同一の指示と資料を渡したときの出力を、[評価ディレクトリ](tests/skill-evals/explanatory-diagrams/README.md) にまとめています。
 
 ## ライセンス
 
-MIT ライセンスです（[LICENSE](LICENSE)）。ただし、見本と eval の出力に含まれる AWS のアイコンは対象外で、[AWS の規約](https://aws.amazon.com/architecture/icons/)に従います。
+[MIT License](LICENSE) のもとで公開しています。ただし、見本テンプレートおよび評価結果に含まれる AWS アイコンは本ライセンスの対象外であり、[AWS アイコンの利用規約](https://aws.amazon.com/architecture/icons/) に従います。
