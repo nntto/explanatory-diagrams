@@ -2,7 +2,7 @@ English | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
 # explanatory-diagrams
 
-A skill that generates draw.io explanatory diagrams directly from diffs, notes, or screenshots. It outputs SVGs with embedded draw.io editable data (`.drawio.svg`). You can embed the generated files directly into Markdown as standard images, and open them in draw.io whenever you need to adjust layouts or update labels. You can also ask the agent to make the changes for you.
+A skill that generates draw.io explanatory diagrams directly from diffs, notes, or screenshots. The output images carry embedded editing data, so you can edit them at any time.
 
 ## Why draw.io?
 
@@ -34,8 +34,8 @@ A comparison of interface styles before and after a theme color update. Modified
 
 ## Prerequisites
 
-- **draw.io Desktop**: Used to export diagrams to SVG (expects standard macOS application path).
-- **Python 3**: Used to embed screenshot images into the SVG payload.
+- **draw.io Desktop**: Used to export diagrams (expects standard macOS application path).
+- **Python 3**: Used to embed screenshot images into diagrams.
 
 If running inside an OS sandbox, refer to [Sandbox Configuration](docs/sandbox.md).
 
