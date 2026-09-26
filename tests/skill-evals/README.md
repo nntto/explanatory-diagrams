@@ -4,8 +4,6 @@ skill に同じ依頼を渡し、モデルごとに返ってくる成果物を�
 
 いまは `explanatory-diagrams`（図解の skill）のケースだけがある。skill の本体は [skills/explanatory-diagrams/](../../skills/explanatory-diagrams/) にあり、`explanatory-diagrams/suite.json` の `skill` がこの場所を指す。モデルごとの出力は [explanatory-diagrams/README.md](explanatory-diagrams/README.md) に並べている。
 
-公開している記録は、skill をこのリポジトリに移す前に実行したものである（[公開済みの記録](#公開済みの記録)）。
-
 ## 固定するもの
 
 | 固定するもの | 置き場所・方法 |
@@ -56,14 +54,6 @@ Claude Code に組み込みの `claude plugin eval` でも、同じケースを�
 python3 tests/skill-evals/run_skill_eval.py official explanatory-diagrams --model sonnet-5
 ```
 
-## 公開済みの記録
-
-`explanatory-diagrams/outputs/` の記録は、skill をこのリポジトリに移す前に、dotfiles（非公開）で実行したものである。
-
-- その時の skill は、図を PNG（`.drawio.png`）で書き出していた。いまの skill は SVG（`.drawio.svg`）で書き出す。公開している出力が PNG なのはそのため。いまの合格条件（`graders/diagram-svg.md`）は `.drawio.svg` を見るので、この PNG は合格条件には合わない。
-- `runs.json` の各実行の `skill` にある `path` と `commit` は、移す前のリポジトリのもの。このリポジトリの履歴にはない。そのことを示すため、`skill.repo` に「移す前の dotfiles（非公開）」と書いた。[explanatory-diagrams/README.md](explanatory-diagrams/README.md) の「実行の条件」の表にも、commit の横に書き添えている。
-- いまの skill で実行した結果は、skill の中身が違うので、そのままでは publish が止まる。実行し直す手順は「[使い方](#使い方)」に書いた。
-
 ## ケースを足す
 
 1. `explanatory-diagrams/cases/<case>/` を作り、`prompt.md`（frontmatter と依頼文）、`case.yaml`、`setup.sh`、`input/`、`graders/` を置く。既存のケースを複製するのが早い。
@@ -83,8 +73,8 @@ node shoot.js shots
 
 ## 前提
 
-- 公開している記録は、移す前の dotfiles で、macOS と draw.io デスクトップ版（`/Applications/draw.io.app`）を使って実行した。ほかの OS では試していない。
-- このリポジトリに移してから（SVG で書き出すいまの skill で）は、run・publish・official をまだ実行していない。
+- 公開している記録は、macOS と draw.io デスクトップ版（`/Applications/draw.io.app`）を使って実行した。ほかの OS では試していない。
+- `official`（`claude plugin eval`）は、skill をこのリポジトリに移してから、まだ実行していない。
 - Claude Code、Codex CLI、draw.io デスクトップ版が入っていること。
-- gpt-6 系のモデルは、古い Codex CLI では動かなかった。どの版から動くかは確かめていない。公開している記録は codex-cli 0.156.0 で実行した。使った版は結果のページと、[explanatory-diagrams/README.md](explanatory-diagrams/README.md) の「実行の条件」の表に記録される。
+- gpt-6 系のモデルは、古い Codex CLI では動かなかった。どの版から動くかは確かめていない。公開している記録は codex-cli 0.157.1 で実行した。使った版は結果のページと、[explanatory-diagrams/README.md](explanatory-diagrams/README.md) の「実行の条件」の表に記録される。
 - 確かめた Mac では、`~/.docker` の中にシンボリックリンクがあると、Bash を許可した `claude plugin eval` が実行前に止まった。
