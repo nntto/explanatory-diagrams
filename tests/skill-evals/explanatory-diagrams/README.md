@@ -757,7 +757,7 @@ SVG の表示と埋め込んだ編集用 XML は確認済みです。draw.io の
 <details><summary>最後の返答</summary>
 
 ~~~~text
-[出荷処理の前後比較図](<<workspace>/out/refactor-shipping-ports.drawio.svg>) を `out/` に置きました。ports と adapter の対応、テストの差分、維持した振る舞いを示しています。図の表示と、SVG 内に埋め込んだ draw.io XML の読み込みを確認しました。
+[出荷処理の前後比較図](<workspace>/out/refactor-shipping-ports.drawio.svg) を `out/` に置きました。ports と adapter の対応、テストの差分、維持した振る舞いを示しています。図の表示と、SVG 内に埋め込んだ draw.io XML の読み込みを確認しました。
 
 draw.io CLI はテンプレートの書き出しでも完了しなかったため、図を SVG として組み立て、編集用 XML を埋め込んでいます。
 ~~~~
