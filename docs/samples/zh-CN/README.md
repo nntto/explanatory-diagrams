@@ -2,33 +2,31 @@
 
 # 样例列表
 
-这是 skill 中日语样例的简体中文版。各样例的布局与日语版相同，只翻译了文字。design-before-after 样例中嵌入的界面截图仍是日语。
+本页列出 18 个样例及各自的使用场景。它们是 skill 中日语样例的简体中文版：布局与日语版相同，只翻译了文字。design-before-after 样例中嵌入的界面截图仍是日语。
 
-skill 只附带日语样例。agent 为其他语言的文档画图时，会翻译样例中的文字。日语列表是 [templates/README.md](../../../skills/explanatory-diagrams/templates/README.md)，agent 从 [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) 找到这份列表，从中寻找相近的样例。本页面用于在本仓库中阅读，不包含在 skill 中。
-
-本页面列出各个样例及其使用场景。
-
-样例的题材、人名、数值和业务规则（如自动批准退款的金额、运费）都是为样例虚构的。
+skill 本身只包含日语样例和[日语列表](../../../skills/explanatory-diagrams/templates/README.md)。agent 从 [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) 找到这份列表，从中挑选相近的样例；目标文档是其他语言时，会翻译样例中的文字。本页不包含在 skill 中。
 
 ## 样例的分类
 
 样例分为 3 类。
 
-- **变更的展示方式**：可以和任何图组合使用的呈现形式，例如如何对比变更前后。
+- **变更的展示方式**：变更前后的对比方式等，可以和任何类型的图组合使用的版式。
 - **重构的说明**：把变更的展示方式套用到常见重构上的例子。
-- **图的类型**：按记法或题材分的样例，如架构图、时序图、状态机图。这些样例没有做成变更前后的形式。
+- **图的类型**：每种记法或题材一个样例，如架构图、时序图、状态机图。这些样例不展示变更前后。
 
-例如，说明 AWS 架构的变更时，用“AWS 架构图”的记法来画，再用“在一张图上叠加差异”的展示方式标出变更点。
+例如，说明 AWS 架构的变更时，agent 用“AWS 架构图”的记法来画，再按“在一张图上叠加差异”的方式标出变化。
 
-用图形画的样例都以同一个虚构的网店（订单、支付、发货）为题材。设计变化和色板的样例，以一个虚构杂货店管理后台的主题为题材，这个后台是为样例用 AntD 制作的。界面图片是这个界面的截图，界面的源码在本仓库（nntto/explanatory-diagrams）的 [`tests/skill-evals/explanatory-diagrams/sources/mock-admin-ui/`](../../../tests/skill-evals/explanatory-diagrams/sources/mock-admin-ui/) 中。色板中变更前的值是 AntD 计算出的值。
+用图形画的样例都以同一个虚构的网店（订单、支付、发货）为题材。设计变化和色板的样例，以一个虚构杂货店管理后台的主题为题材，这个后台是为这些样例用 AntD 制作的。界面截图取自这个后台，源码在 [`tests/skill-evals/explanatory-diagrams/sources/mock-admin-ui/`](../../../tests/skill-evals/explanatory-diagrams/sources/mock-admin-ui/)。色板中变更前的值是 AntD 计算出的值。
 
-所有样例都是 `.drawio.svg`，用 draw.io 打开即可直接编辑。配色和线条的含义整理在 [references/drawio-style.md](../../../skills/explanatory-diagrams/references/drawio-style.md) 中。references/ 下的文档是日语的。
+样例中的题材、人名、数值和业务规则（如自动批准退款的金额、运费）都是虚构的。
+
+所有样例都是 `.drawio.svg` 文件，可以用 draw.io 打开编辑。配色和线型的含义见 [references/drawio-style.md](../../../skills/explanatory-diagrams/references/drawio-style.md)（日语）。
 
 ## 变更的展示方式
 
 ### 左右并排对比
 
-使用场景：想展示结构本身有什么不同的变更。变更前后共用同一个框架（本例中是各层的横带），只让变化的部分引人注意。也附上“3 个 → 1 个”这样的数量变化。
+使用场景：想展示结构本身有什么不同的变更。变更前后共用同一个框架（本例中是各层的横带），让人一眼看出变化的部分。也写上“3 个 → 1 个”这样的数量变化。
 
 ![左右并排的变更前后图，展示从界面直接调用外部 API 的结构改为经由服务层的结构，标题为“将支付与库存回滚移至 OrderService，让界面只调用 1 个组件”](before-after-split.drawio.svg)
 
@@ -40,7 +38,7 @@ skill 只附带日语样例。agent 为其他语言的文档画图时，会翻�
 
 ### 并排界面对比设计变化
 
-使用场景：颜色、间距、圆角等外观上的变更。把变更前后的实际界面左右并排（横向很长的组件则上下排列），用橙框圈出希望关注的组件。给框加上编号，与变化值的表格对应起来。
+使用场景：颜色、间距、圆角等外观上的变更。把变更前后的实际界面左右并排（横向很长的组件则上下排列），用橙框圈出需要关注的组件。给框编号，与列出变化值的表格对应。
 
 ![左右并排的变更前后界面，标题为“将日期范围填充、聚焦轮廓和 link 颜色统一为店铺颜色”](design-before-after.drawio.svg)
 
@@ -54,7 +52,7 @@ skill 只附带日语样例。agent 为其他语言的文档画图时，会翻�
 
 ### 移动状态的存放位置
 
-使用场景：把 Hook 或模块持有的状态提取到别处的重构。用橙色表示要移动的状态，用蓝色表示移动目标，并注明状态的数量不变。
+使用场景：把 Hook 或模块持有的状态提取到别处的重构。要移动的状态用橙色表示，移动后的位置用蓝色表示，并注明状态的数量不变。
 
 ![左右并排的变更前后图，标题为“从 useOrderEditor 提取 3 个状态并移至 useDraft”](refactor-move-state.drawio.svg)
 
@@ -140,4 +138,4 @@ skill 只附带日语样例。agent 为其他语言的文档画图时，会翻�
 
 ## 添加样例
 
-向 skill 添加样例的步骤见[日语列表](../../../skills/explanatory-diagrams/templates/README.md#テンプレートの追加)。添加时，也要把英语版和简体中文版放进 `docs/samples/en/` 和 `docs/samples/zh-CN/`，并加到这两个列表中，让 3 种语言的样例保持一致。
+向 skill 添加样例的步骤见[日语列表](../../../skills/explanatory-diagrams/templates/README.md#テンプレートの追加)。添加时，也要把英语版和简体中文版分别放进 `docs/samples/en/` 和 `docs/samples/zh-CN/`，并加到各自的列表中，让 3 种语言的样例保持一致。

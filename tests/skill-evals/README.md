@@ -1,10 +1,10 @@
 # skill の eval
 
-skill に同じ依頼を渡し、モデルごとにどんな成果物が出るかを並べて比べる仕組み。依頼文、入力ファイル、skill の中身、読み込ませる指示を固定し、モデルと effort だけを変える。
+skill に同じ依頼を渡し、モデルごとに返ってくる成果物を並べて比べるための仕組みである。依頼文、入力ファイル、skill の中身、読み込ませる指示を固定し、モデルと effort だけを変える。
 
 いまは `explanatory-diagrams`（図解の skill）のケースだけがある。skill の本体は [skills/explanatory-diagrams/](../../skills/explanatory-diagrams/) にあり、`explanatory-diagrams/suite.json` の `skill` がこの場所を指す。モデルごとの出力は [explanatory-diagrams/README.md](explanatory-diagrams/README.md) に並べている。
 
-公開している記録は、skill をこのリポジトリに移す前に実行したもの（[公開済みの記録](#公開済みの記録)）。
+公開している記録は、skill をこのリポジトリに移す前に実行したものである（[公開済みの記録](#公開済みの記録)）。
 
 ## 固定するもの
 
@@ -58,7 +58,7 @@ python3 tests/skill-evals/run_skill_eval.py official explanatory-diagrams --mode
 
 ## 公開済みの記録
 
-`explanatory-diagrams/outputs/` の記録は、skill をこのリポジトリに移す前に、dotfiles（非公開）で実行したもの。
+`explanatory-diagrams/outputs/` の記録は、skill をこのリポジトリに移す前に、dotfiles（非公開）で実行したものである。
 
 - その時の skill は、図を PNG（`.drawio.png`）で書き出していた。いまの skill は SVG（`.drawio.svg`）で書き出す。公開している出力が PNG なのはそのため。いまの合格条件（`graders/diagram-svg.md`）は `.drawio.svg` を見るので、この PNG は合格条件には合わない。
 - `runs.json` の各実行の `skill` にある `path` と `commit` は、移す前のリポジトリのもの。このリポジトリの履歴にはない。そのことを示すため、`skill.repo` に「移す前の dotfiles（非公開）」と書いた。[explanatory-diagrams/README.md](explanatory-diagrams/README.md) の「実行の条件」の表にも、commit の横に書き添えている。
@@ -70,11 +70,10 @@ python3 tests/skill-evals/run_skill_eval.py official explanatory-diagrams --mode
 2. 近い見本があれば、`suite.json` の `cases.<case>.references` に skill の中のパス（`templates/<name>/<name>.drawio.svg`）を書く。結果のページと公開ページに、近い見本として載る。
 3. `setup.sh` が `input/` をそのまま写すだけでないときは、作業場所に何を置くかを `suite.json` の `cases.<case>.workspace` に書く。README の入力の欄に載る。たとえば `refactor-dependency-inversion` は、`input/before` と `input/after` から git リポジトリを組み立て、モデルには main との差分を読ませている。
 4. 入力には実在の会社・人・業務の資料を使わず、架空の題材にする。画面の画像が必要なら、`sources/mock-admin-ui/` のような架空の画面から撮る。
-5. 結果を公開したら、ルートの [README.md](../../README.md#output-by-model)（Output by model）、[README.ja.md](../../README.ja.md#モデルごとの出力)（モデルごとの出力）、[README.zh-CN.md](../../README.zh-CN.md#各模型的输出)（各模型的输出）の表に、ケースを 1 行足す（説明する変更と、渡した資料）。
 
 ## 画面の画像の作り方
 
-`explanatory-diagrams/sources/mock-admin-ui/` は、AntD で作った架空の雑貨店の管理画面。ケース `design-token-change` の入力画像と、skill の見本 `design-before-after` はここから撮った。店、人名、住所、電話番号、注文は、すべて架空のもの。ケースの入力（`cases/*/input/`）にある人名・住所・数値・業務のルールも架空。
+`explanatory-diagrams/sources/mock-admin-ui/` は、AntD で作った架空の雑貨店の管理画面である。ケース `design-token-change` の入力画像と、skill の見本 `design-before-after` はここから撮った。店、人名、住所、電話番号、注文は、すべて架空のものである。ケースの入力（`cases/*/input/`）にある人名・住所・数値・業務のルールも架空である。
 
 ```bash
 cd tests/skill-evals/explanatory-diagrams/sources/mock-admin-ui

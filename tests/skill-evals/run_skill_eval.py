@@ -444,20 +444,20 @@ def write_suite_readme(suite_dir: Path, suite: dict):
     # publish はケースの中で skill の中身が違う結果を混ぜないので、移す前の記録かどうかはケースごとに決まる
     old_cases = [d.name for d in case_dirs if all(
         r["skill"].get("repo") for m in json.loads((suite_dir / "outputs" / d.name / "runs.json").read_text())["models"].values() for r in m["runs"])]
-    whose = "公開している記録は、すべて " if len(old_cases) == len(case_dirs) else f"ケース {'、'.join(old_cases)} の記録は、"
-    history = [whose + "skill をこのリポジトリに移す前に、dotfiles（非公開）で実行したもの。"
-               "その時の skill は、図を PNG（`.drawio.png`）で書き出していた。いまの skill は SVG（`.drawio.svg`）で書き出す。"
-               "その記録の commit（「実行の条件」の表）は移す前のリポジトリのもので、このリポジトリの履歴にはない。", ""] if old_cases else []
+    whose = "公開している記録は、どれも " if len(old_cases) == len(case_dirs) else f"ケース {'、'.join(old_cases)} の記録は、"
+    history = [whose + "skill をこのリポジトリに移す前に、dotfiles（非公開）で実行したものである。"
+               "当時の skill は図を PNG（`.drawio.png`）で書き出しており、今の skill は SVG（`.drawio.svg`）で書き出す。"
+               "「実行の条件」の表にある commit は移す前のリポジトリのもので、このリポジトリの履歴にはない。", ""] if old_cases else []
     lines = [f"# {suite_dir.name}：モデルごとの出力", "",
-             "同じ入力（依頼文・資料・画像・skill の中身）を渡したとき、モデルごとに出力がどう変わるかを並べる。"
+             "同じ入力（依頼文・資料・画像・skill の中身）を渡したときに、モデルごとに返ってきた図を並べている。"
              "skill の説明はリポジトリの [README](../../../README.md)（[日本語](../../../README.ja.md)、[简体中文](../../../README.zh-CN.md)）に、"
              "eval の仕組みと実行のしかたは [../README.md](../README.md) にある。", "",
              *history,
-             "ケースの題材（雑貨店の EC と管理画面）、人名・住所・電話番号・注文番号・数値・業務のルールは、この eval のために作った架空のもの。", "",
-             "この README と `outputs/` は `python3 tests/skill-evals/run_skill_eval.py publish <結果のディレクトリ>` で作り直すので、手で編集しない。"
-             "どのモデルも実行は 1 回ずつなので、同じモデルでも実行ごとに図は変わる。"
-             "時間は複数の実行を同時に動かして測ったので、目安にとどめる。"
-             "Codex CLI は費用を返さないので、Codex のモデルの費用は「—」にしている。", ""]
+             "ケースの題材（雑貨店の EC サイトと管理画面）、人名・住所・電話番号・注文番号・数値・業務のルールは、どれもこの eval のために作った架空のものである。", "",
+             "どのモデルも 1 回ずつしか実行していないので、同じモデルでも実行し直せば図は変わる。"
+             "時間は複数の実行を同時に動かして測ったので、目安として見てほしい。"
+             "Codex CLI は費用を返さないので、Codex のモデルの費用は「—」にしている。"
+             "この README と `outputs/` は `python3 tests/skill-evals/run_skill_eval.py publish <結果のディレクトリ>` で作り直すので、手では編集しない。", ""]
     for case_dir in case_dirs:
         meta, _ = split_front_matter((case_dir / "prompt.md").read_text())
         lines.append(f"- [{case_dir.name}](#{case_dir.name})：{meta.get('description', '')}")
