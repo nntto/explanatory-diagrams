@@ -33,7 +33,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "2.1.282 (Claude Code)"
         }
@@ -68,7 +69,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "2.1.282 (Claude Code)"
         }
@@ -103,7 +105,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "2.1.282 (Claude Code)"
         }
@@ -138,7 +141,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "2.1.282 (Claude Code)"
         }
@@ -173,7 +177,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "codex-cli 0.156.0"
         }
@@ -196,7 +201,7 @@
           "exit_code": 0,
           "timed_out": false,
           "errors": [],
-          "final_message": "PR 本文用の図を [out/product-images.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-0n19n9cy/work/out/product-images.drawio.png) に作成しました。\n\n変更前後の登録・配信経路、サムネイル生成、EFS の撤去と画像の移行順序を示しています。PNG を確認済みで、draw.io で再編集できます。",
+          "final_message": "PR 本文用の図を [out/product-images.drawio.png](<workspace>/out/product-images.drawio.png) に作成しました。\n\n変更前後の登録・配信経路、サムネイル生成、EFS の撤去と画像の移行順序を示しています。PNG を確認済みで、draw.io で再編集できます。",
           "files": [
             {
               "path": "gpt-6-sol/run-1/product-images.drawio.png",
@@ -208,7 +213,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "codex-cli 0.156.0"
         }
@@ -231,7 +237,7 @@
           "exit_code": 0,
           "timed_out": false,
           "errors": [],
-          "final_message": "PR本文用の図を [product-images.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-isak7b4h/work/out/product-images.drawio.png) に作成しました。変更前後の画像フロー、5分有効の署名付き PUT、サムネイル生成、CloudFront の OAC 配信、既存画像の移行順をまとめています。\n\nPNG を書き出して表示を確認済みです。draw.io の編集データも PNG に埋め込んであります。",
+          "final_message": "PR本文用の図を [product-images.drawio.png](<workspace>/out/product-images.drawio.png) に作成しました。変更前後の画像フロー、5分有効の署名付き PUT、サムネイル生成、CloudFront の OAC 配信、既存画像の移行順をまとめています。\n\nPNG を書き出して表示を確認済みです。draw.io の編集データも PNG に埋め込んであります。",
           "files": [
             {
               "path": "gpt-6-luna/run-1/product-images.drawio.png",
@@ -243,7 +249,8 @@
             "path": "dot_agent-skills/explanatory-diagrams",
             "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
             "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
-            "dirty": false
+            "dirty": false,
+            "repo": "移す前の dotfiles（非公開）"
           },
           "cli": "codex-cli 0.156.0"
         }

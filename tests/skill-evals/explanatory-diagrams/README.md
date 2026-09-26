@@ -1,6 +1,10 @@
 # explanatory-diagrams：モデルごとの出力
 
-同じ入力（依頼文・資料・画像・skill の中身）を渡したとき、モデルごとに出力がどう変わるかを並べる。仕組みと実行のしかたは [../README.md](../README.md) にある。
+同じ入力（依頼文・資料・画像・skill の中身）を渡したとき、モデルごとに出力がどう変わるかを並べる。skill の説明はリポジトリの [README](../../../README.md)（[日本語](../../../README.ja.md)、[简体中文](../../../README.zh-CN.md)）に、eval の仕組みと実行のしかたは [../README.md](../README.md) にある。
+
+公開している記録は、すべて skill をこのリポジトリに移す前に、dotfiles（非公開）で実行したもの。その時の skill は、図を PNG（`.drawio.png`）で書き出していた。いまの skill は SVG（`.drawio.svg`）で書き出す。その記録の commit（「実行の条件」の表）は移す前のリポジトリのもので、このリポジトリの履歴にはない。
+
+ケースの題材（雑貨店の EC と管理画面）、人名・住所・電話番号・注文番号・数値・業務のルールは、この eval のために作った架空のもの。
 
 この README と `outputs/` は `python3 tests/skill-evals/run_skill_eval.py publish <結果のディレクトリ>` で作り直すので、手で編集しない。どのモデルも実行は 1 回ずつなので、同じモデルでも実行ごとに図は変わる。時間は複数の実行を同時に動かして測ったので、目安にとどめる。Codex CLI は費用を返さないので、Codex のモデルの費用は「—」にしている。
 
@@ -20,7 +24,7 @@
 - [infra.diff](cases/aws-infra-change/input/infra.diff)
 - [notes.md](cases/aws-infra-change/input/notes.md)
 
-近い見本（skill の中）：[aws-architecture](../../../dot_agent-skills/explanatory-diagrams/templates/aws-architecture/aws-architecture.drawio.png)、[before-after-diff](../../../dot_agent-skills/explanatory-diagrams/templates/before-after-diff/before-after-diff.drawio.png)
+近い見本（skill の中）：[aws-architecture](../../../skills/explanatory-diagrams/templates/aws-architecture/aws-architecture.drawio.svg)、[before-after-diff](../../../skills/explanatory-diagrams/templates/before-after-diff/before-after-diff.drawio.svg)
 
 | モデル | effort | 時間 | 費用の目安 | トークン（入力／出力） | ツール | skill | 出力 |
 |---|---|---|---|---|---|---|---|
@@ -184,7 +188,7 @@ gh pr edit -R <owner/repo> <number> --body-file body.md --attach './out/product-
 <details><summary>最後の返答</summary>
 
 ~~~~text
-PR 本文用の図を [out/product-images.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-0n19n9cy/work/out/product-images.drawio.png) に作成しました。
+PR 本文用の図を [out/product-images.drawio.png](<workspace>/out/product-images.drawio.png) に作成しました。
 
 変更前後の登録・配信経路、サムネイル生成、EFS の撤去と画像の移行順序を示しています。PNG を確認済みで、draw.io で再編集できます。
 ~~~~
@@ -203,7 +207,7 @@ PR 本文用の図を [out/product-images.drawio.png](/private/var/folders/8l/x3
 <details><summary>最後の返答</summary>
 
 ~~~~text
-PR本文用の図を [product-images.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-isak7b4h/work/out/product-images.drawio.png) に作成しました。変更前後の画像フロー、5分有効の署名付き PUT、サムネイル生成、CloudFront の OAC 配信、既存画像の移行順をまとめています。
+PR本文用の図を [product-images.drawio.png](<workspace>/out/product-images.drawio.png) に作成しました。変更前後の画像フロー、5分有効の署名付き PUT、サムネイル生成、CloudFront の OAC 配信、既存画像の移行順をまとめています。
 
 PNG を書き出して表示を確認済みです。draw.io の編集データも PNG に埋め込んであります。
 ~~~~
@@ -216,13 +220,13 @@ PNG を書き出して表示を確認済みです。draw.io の編集データ�
 
 | モデル | 実行日時 | skill の sha256 | commit | CLI |
 |---|---|---|---|---|
-| opus-5.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| sonnet-5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| haiku-4.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| fable-5.1 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| gpt-6-astra | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
-| gpt-6-sol | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
-| gpt-6-luna | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
+| opus-5.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| sonnet-5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| haiku-4.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| fable-5.1 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| gpt-6-astra | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
+| gpt-6-sol | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
+| gpt-6-luna | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
 
 環境の注意書き（どのモデルにも同じ文で渡した）：この環境では、シェルのコマンドは OS のサンドボックスの中で動く。draw.io の書き出し（/Applications/draw.io.app/Contents/MacOS/draw.io -x ...）だけはサンドボックスの外で動くが、ほかのコマンドと &&、;、パイプ、改行でつなげず、単独で実行したときに限る。つなげるとサンドボックスの中で動き、異常終了する。
 
@@ -243,7 +247,7 @@ PNG を書き出して表示を確認済みです。draw.io の編集データ�
 <td><img src="cases/design-token-change/input/screenshots/after/orders.png" width="220"><br><code>screenshots/after/orders.png</code></td>
 </tr></table>
 
-近い見本（skill の中）：[design-before-after](../../../dot_agent-skills/explanatory-diagrams/templates/design-before-after/design-before-after.drawio.png)
+近い見本（skill の中）：[design-before-after](../../../skills/explanatory-diagrams/templates/design-before-after/design-before-after.drawio.svg)
 
 | モデル | effort | 時間 | 費用の目安 | トークン（入力／出力） | ツール | skill | 出力 |
 |---|---|---|---|---|---|---|---|
@@ -389,7 +393,7 @@ gh pr edit -R <owner/repo> <number> --body-file body.md --attach './out/status-c
 <details><summary>最後の返答</summary>
 
 ~~~~text
-[図を out/status-colors.drawio.png に作成しました。](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-thmet6kq/work/out/status-colors.drawio.png)
+[図を out/status-colors.drawio.png に作成しました。](<workspace>/out/status-colors.drawio.png)
 
 実画面の前後比較、変更した5つの設定値、成功の背景・枠線を指定した理由をまとめています。PR に貼り付けられ、draw.io で再編集できます。
 ~~~~
@@ -408,7 +412,7 @@ gh pr edit -R <owner/repo> <number> --body-file body.md --attach './out/status-c
 <details><summary>最後の返答</summary>
 
 ~~~~text
-PR 本文用の図を [out/status-colors.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-zrbiskzf/work/out/status-colors.drawio.png) に作成しました。
+PR 本文用の図を [out/status-colors.drawio.png](<workspace>/out/status-colors.drawio.png) に作成しました。
 
 注文一覧とお届け先編集の画面を変更前後で並べ、変更したトークン値と、青の「出荷待ち」は変わらないことを示しています。書き出した画像を確認済みで、PNG には draw.io の編集用データも埋め込んであります。
 ~~~~
@@ -427,7 +431,7 @@ PR 本文用の図を [out/status-colors.drawio.png](/private/var/folders/8l/x3c
 <details><summary>最後の返答</summary>
 
 ~~~~text
-図を [state-colors.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-jxetxk_3/work/out/state-colors.drawio.png) に作成しました。前後の画面比較、トークン値、背景色の指定・計算方法、変更しない情報色をまとめています。PNGにはdraw.ioの編集データも埋め込んであります。
+図を [state-colors.drawio.png](<workspace>/out/state-colors.drawio.png) に作成しました。前後の画面比較、トークン値、背景色の指定・計算方法、変更しない情報色をまとめています。PNGにはdraw.ioの編集データも埋め込んであります。
 ~~~~
 
 </details>
@@ -438,13 +442,13 @@ PR 本文用の図を [out/status-colors.drawio.png](/private/var/folders/8l/x3c
 
 | モデル | 実行日時 | skill の sha256 | commit | CLI |
 |---|---|---|---|---|
-| opus-5.5 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| sonnet-5 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| haiku-4.5 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| fable-5.1 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| gpt-6-astra | 2026-09-26T12:36:42 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
-| gpt-6-sol | 2026-09-26T12:36:42 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
-| gpt-6-luna | 2026-09-26T12:36:42 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
+| opus-5.5 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| sonnet-5 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| haiku-4.5 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| fable-5.1 | 2026-09-26T13:01:03 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| gpt-6-astra | 2026-09-26T12:36:42 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
+| gpt-6-sol | 2026-09-26T12:36:42 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
+| gpt-6-luna | 2026-09-26T12:36:42 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
 
 環境の注意書き（どのモデルにも同じ文で渡した）：この環境では、シェルのコマンドは OS のサンドボックスの中で動く。draw.io の書き出し（/Applications/draw.io.app/Contents/MacOS/draw.io -x ...）だけはサンドボックスの外で動くが、ほかのコマンドと &&、;、パイプ、改行でつなげず、単独で実行したときに限る。つなげるとサンドボックスの中で動き、異常終了する。
 
@@ -460,7 +464,7 @@ PR 本文用の図を [out/status-colors.drawio.png](/private/var/folders/8l/x3c
 - [before/（9 ファイル）](cases/refactor-dependency-inversion/input/before)
 - [notes.md](cases/refactor-dependency-inversion/input/notes.md)
 
-近い見本（skill の中）：[before-after-split](../../../dot_agent-skills/explanatory-diagrams/templates/before-after-split/before-after-split.drawio.png)、[refactor-extract-module](../../../dot_agent-skills/explanatory-diagrams/templates/refactor-extract-module/refactor-extract-module.drawio.png)
+近い見本（skill の中）：[before-after-split](../../../skills/explanatory-diagrams/templates/before-after-split/before-after-split.drawio.svg)、[refactor-extract-module](../../../skills/explanatory-diagrams/templates/refactor-extract-module/refactor-extract-module.drawio.svg)
 
 | モデル | effort | 時間 | 費用の目安 | トークン（入力／出力） | ツール | skill | 出力 |
 |---|---|---|---|---|---|---|---|
@@ -598,7 +602,7 @@ gh pr edit -R <owner/repo> <number> --body-file body.md --attach './out/shipping
 <details><summary>最後の返答</summary>
 
 ~~~~text
-[out/shipping-refactor.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-l6j1afmq/work/out/shipping-refactor.drawio.png) に作成しました。
+[out/shipping-refactor.drawio.png](<workspace>/out/shipping-refactor.drawio.png) に作成しました。
 
 main との差分と `notes.md` を基に、依存関係・SDK の生成場所・テストの前後を図解しています。PR に貼れる PNG で、draw.io での再編集も可能です。
 ~~~~
@@ -619,7 +623,7 @@ main との差分と `notes.md` を基に、依存関係・SDK の生成場所�
 ~~~~text
 main との差分と `notes.md` を基に、変更前後の依存関係とテストでの差し替え方を図にしました。送り状・PDF 保存先・メール文面が維持される点も記載しています。
 
-[PR 本文用の図を開く](</private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-7t1ja80a/work/out/shipping-ports.drawio.png>)。PNG に編集用の図データを埋め込み、表示とデータの読み取りを確認済みです。
+[PR 本文用の図を開く](<<workspace>/out/shipping-ports.drawio.png>)。PNG に編集用の図データを埋め込み、表示とデータの読み取りを確認済みです。
 ~~~~
 
 </details>
@@ -636,7 +640,7 @@ main との差分と `notes.md` を基に、変更前後の依存関係とテス
 <details><summary>最後の返答</summary>
 
 ~~~~text
-[out/shipping-refactor.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-i2k6oly7/work/out/shipping-refactor.drawio.png) に図を置きました。変更前後の SDK 依存、ports と adapter、テスト方法、維持した出荷フローをまとめています。PNG には編集元 XML が埋め込まれています。
+[out/shipping-refactor.drawio.png](<workspace>/out/shipping-refactor.drawio.png) に図を置きました。変更前後の SDK 依存、ports と adapter、テスト方法、維持した出荷フローをまとめています。PNG には編集元 XML が埋め込まれています。
 
 再書き出しが draw.io で停止したため初回版を残しました。右側パネル上部の注入線ラベルが見出しに重なっています。`repo/` の作業ツリーには変更ありません。
 ~~~~
@@ -649,12 +653,12 @@ main との差分と `notes.md` を基に、変更前後の依存関係とテス
 
 | モデル | 実行日時 | skill の sha256 | commit | CLI |
 |---|---|---|---|---|
-| opus-5.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| sonnet-5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| haiku-4.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| fable-5.1 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | 2.1.282 (Claude Code) |
-| gpt-6-astra | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
-| gpt-6-sol | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
-| gpt-6-luna | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79` | codex-cli 0.156.0 |
+| opus-5.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| sonnet-5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| haiku-4.5 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| fable-5.1 | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | 2.1.282 (Claude Code) |
+| gpt-6-astra | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
+| gpt-6-sol | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
+| gpt-6-luna | 2026-09-26T13:01:00 | `82b734928608` | `ccb5e79`、移す前の dotfiles（非公開） | codex-cli 0.156.0 |
 
 環境の注意書き（どのモデルにも同じ文で渡した）：この環境では、シェルのコマンドは OS のサンドボックスの中で動く。draw.io の書き出し（/Applications/draw.io.app/Contents/MacOS/draw.io -x ...）だけはサンドボックスの外で動くが、ほかのコマンドと &&、;、パイプ、改行でつなげず、単独で実行したときに限る。つなげるとサンドボックスの中で動き、異常終了する。

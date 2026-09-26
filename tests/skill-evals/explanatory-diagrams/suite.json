@@ -1,16 +1,16 @@
 {
-  "skill": "dot_agent-skills/explanatory-diagrams",
+  "skill": "skills/explanatory-diagrams",
   "drawio": "/Applications/draw.io.app/Contents/MacOS/draw.io",
   "cases": {
     "design-token-change": {
-      "references": ["templates/design-before-after/design-before-after.drawio.png"]
+      "references": ["templates/design-before-after/design-before-after.drawio.svg"]
     },
     "aws-infra-change": {
-      "references": ["templates/aws-architecture/aws-architecture.drawio.png", "templates/before-after-diff/before-after-diff.drawio.png"]
+      "references": ["templates/aws-architecture/aws-architecture.drawio.svg", "templates/before-after-diff/before-after-diff.drawio.svg"]
     },
     "refactor-dependency-inversion": {
       "workspace": "、`input/before` を main、`input/after` を作業ブランチのコミットにした git リポジトリ `repo/` と、`notes.md` を作業場所に置く",
-      "references": ["templates/before-after-split/before-after-split.drawio.png", "templates/refactor-extract-module/refactor-extract-module.drawio.png"]
+      "references": ["templates/before-after-split/before-after-split.drawio.svg", "templates/refactor-extract-module/refactor-extract-module.drawio.svg"]
     }
   },
   "models": [

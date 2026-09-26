@@ -1,0 +1,17 @@
+{
+  "name": "nntto",
+  "description": "Agent skills by nntto",
+  "owner": {
+    "name": "nntto"
+  },
+  "plugins": [
+    {
+      "name": "explanatory-diagrams",
+      "description": "Draw explanatory diagrams for pull requests and design docs with draw.io, and return an editable .drawio.svg.",
+      "version": "0.1.0",
+      "source": "./skills/explanatory-diagrams",
+      "license": "MIT",
+      "strict": false
+    }
+  ]
+}
