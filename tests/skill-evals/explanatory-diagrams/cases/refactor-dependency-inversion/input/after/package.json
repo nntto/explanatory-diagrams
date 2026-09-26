@@ -1,0 +1,22 @@
+{
+  "name": "shop-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "test": "vitest run",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@example/carrier-sdk": "^2.4.0",
+    "@example/db-sdk": "^1.8.0",
+    "@example/mail-sdk": "^3.1.0",
+    "@example/storage-sdk": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.0"
+  }
+}

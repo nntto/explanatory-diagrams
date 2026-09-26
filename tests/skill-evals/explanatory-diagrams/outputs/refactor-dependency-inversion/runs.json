@@ -1,0 +1,253 @@
+{
+  "case": "refactor-dependency-inversion",
+  "prompt_sha256": "f750a32d945f2ca5a7bff5ca7ea65ce0be4a1b28fb065f62bc69767e94264879",
+  "input_sha256": "1eb48406ec21ff95ae3712788218aba02c8ca43cf5f1b679548fe927ace4179c",
+  "environment_note": "この環境では、シェルのコマンドは OS のサンドボックスの中で動く。draw.io の書き出し（/Applications/draw.io.app/Contents/MacOS/draw.io -x ...）だけはサンドボックスの外で動くが、ほかのコマンドと &&、;、パイプ、改行でつなげず、単独で実行したときに限る。つなげるとサンドボックスの中で動き、異常終了する。",
+  "models": {
+    "opus-5.5": {
+      "vendor": "claude",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 260.1,
+          "cost_usd": 1.1768088,
+          "input_tokens": 873053,
+          "output_tokens": 23911,
+          "tool_calls": 15,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "図を作って `out/` に置きました。\n\n**出力:** `out/shipping-ports.drawio.png`（2 倍で書き出し。編集元の XML を埋め込んであるので、draw.io で開けばそのまま直せます）\n\n**図の組み立て**\n- 変更前と変更後を左右に並べ、5 つの帯を両側で揃えました。帯は上から、組み立て（main.ts）→ 出荷の処理 → interface（ports.ts）→ SDK を使う実装（src/infra/）→ 外部 SDK です。\n- **変更前**：`shipOrder.ts` から 3 つの SDK へ、橙の矢印を直接引いています。矢印には `createShipment` / `putObject` / `send` と書きました。「読み込み時に SDK のクライアントを 3 つ作る」と、テストの「vi.mock で SDK を 3 つ差し替える」は橙の枠で示しています。\n- **変更後**：`LabelIssuer` / `FileStorage` / `Mailer`、`src/infra/` の 3 つの実装、main.ts でクライアントを作って渡す部分を青で示しました。実装から interface へは、UML の実装の矢印（破線に白抜きの三角）を引いています。前の直接の依存と `vi.mock` は、灰の破線に ✕ で残しました。\n- 見出しの下に、出荷の処理が直接 import する SDK の数を「3 つ → 0」と添えました。\n\n**文言について**\n- 副題に「送り状の内容・PDF の保存先・メールの文面は変えていない」、図の下に「orderStore.ts はこの PR では触っていない」と入れました。どちらも notes.md の記述です。\n- 「今回の効果」の欄に 2 社目の配送業者のことを書きました。「LabelIssuer の実装として足せるので、出荷の処理に分岐を書かずに済む」という書き方は、差分から読み取った私の解釈です。この PR ではまだ入れていないので、言い過ぎだと感じたら削ります。\n\n**直すと良いところ**\n- 図の幅が約 1300px あるので、PR 本文では縮めて表示されます。細部は、画像を開いて拡大して読む前提です。\n- 「呼ぶ」「使う」「偽物を作る」の短い矢印では、矢じりがラベルに少し隠れています。気になれば直します。\n\nPR に貼るときは `gh pr edit <番号> --body-file body.md --attach './out/shipping-ports.drawio.png#出荷の処理から SDK を切り離す変更の前後'` のように添付できます。",
+          "files": [
+            {
+              "path": "opus-5.5/run-1/shipping-ports.drawio.png",
+              "outside_out": false,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "2.1.282 (Claude Code)"
+        }
+      ]
+    },
+    "sonnet-5": {
+      "vendor": "claude",
+      "model": "claude-sonnet-5",
+      "effort": "high",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 528.0,
+          "cost_usd": 1.3389324000000002,
+          "input_tokens": 2224754,
+          "output_tokens": 52175,
+          "tool_calls": 33,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "`work/out/shipping-ports-refactor.drawio.png` に置きました。draw.io で開けば編集もできます（`.drawio.png` は編集元 XML を埋め込んだ形式）。\n\n図の内容：\n- **変更前**：`shipOrder.ts` が `main.ts` から呼ばれ、`CarrierClient`/`StorageClient`/`MailClient` の SDK を直接 import して呼ぶ（層を飛ばす依存、橙）。\n- **変更後**：`main.ts` が SDK client を作り `src/infra/` の adapter に包んで `createShipOrder(deps)` に注入（DI、青）。`shipOrder` は `LabelIssuer`/`FileStorage`/`Mailer` という port（`ports.ts`）だけを知り、adapter がその port を実装（`implements`）して SDK を呼ぶ。\n- 下部に今回の効果（テストが port の偽物差し替えになったこと、来月の配送業者追加が `LabelIssuer` 実装の追加だけで済むこと、`orderStore.ts` は対象外であること）を注記しています。\n\nPR 本文にこの画像を貼る場合は `gh pr edit --attach` で添付してください（`.drawio.png` 自体はリポジトリにコミットしない運用です）。",
+          "files": [
+            {
+              "path": "sonnet-5/run-1/shipping-ports-refactor.drawio.png",
+              "outside_out": false,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "2.1.282 (Claude Code)"
+        }
+      ]
+    },
+    "haiku-4.5": {
+      "vendor": "claude",
+      "model": "claude-haiku-4-5-20251001",
+      "effort": "high",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 169.4,
+          "cost_usd": 0.24632199999999999,
+          "input_tokens": 1161307,
+          "output_tokens": 14004,
+          "tool_calls": 24,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "完成しました！リファクタリングを説明する図を生成して、`repo/out/refactor-shipping-ports.png` に配置しました。\n\n図の内容：\n- **左側（変更前）**：shipOrder.ts が SDK（CarrierClient、StorageClient、MailClient）3つを直接呼び出す結合度の高い設計\n- **右側（変更後）**：shipOrder.ts がインターフェイス（ports.ts）に依存し、SDK の実装は infra/ に隠蔽された疎結合な設計\n\nこのリファクタリングにより、ビジネスロジックが外部 SDK に依存しなくなり、テストが容易になり、実装の詳細が隠蔽されます。",
+          "files": [
+            {
+              "path": "haiku-4.5/run-1/repo/out/refactor-shipping-ports.png",
+              "outside_out": true,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "2.1.282 (Claude Code)"
+        }
+      ]
+    },
+    "fable-5.1": {
+      "vendor": "claude",
+      "model": "claude-fable-5-1",
+      "effort": "high",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 534.8,
+          "cost_usd": 4.360721749999999,
+          "input_tokens": 1365694,
+          "output_tokens": 41802,
+          "tool_calls": 25,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "図を `out/shipping-ports.drawio.png` に置きました。編集元の XML を埋め込んだ PNG なので、draw.io で開けばそのまま直せます。\n\n**図の構成**は、main との差分 1 コミットと notes.md を元にした、層の帯による左右比較です。\n\n- **変更前**は shipOrder.ts が読み込み時に 3 つの SDK client を生成して直接呼び、テストは vi.mock で SDK を丸ごと差し替えていたことを橙で示しています。\n- **変更後**は ports.ts の 3 つの interface（LabelIssuer、FileStorage、Mailer）を青で足し、shipOrder.ts はそれだけに頼む形にしました。src/infra/ の 3 クラスが interface を実装し、main.ts が SDK client を包んで渡す流れも入れています。\n- **テスト**は SDK のモックをやめて interface の偽物を渡す点を、infra と同じ「実装する」矢印で ports.ts につないでいます。\n- **効果の欄**には、テストが偽物を渡すだけになることと、2 社目の配送業者が LabelIssuer の実装追加と main.ts の差し替えで済むことを書きました。orderStore を触っていないことは副題に入れています。\n\nPR に貼るときは、次のように本文と一緒に添付できます。\n\n```bash\ngh pr edit -R <owner/repo> <number> --body-file body.md --attach './out/shipping-ports.drawio.png#出荷の処理の変更前後'\n```",
+          "files": [
+            {
+              "path": "fable-5.1/run-1/shipping-ports.drawio.png",
+              "outside_out": false,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "2.1.282 (Claude Code)"
+        }
+      ]
+    },
+    "gpt-6-astra": {
+      "vendor": "codex",
+      "model": "gpt-6-astra",
+      "effort": "high",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 235.2,
+          "cost_usd": null,
+          "input_tokens": 321842,
+          "output_tokens": 6123,
+          "tool_calls": 12,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "[out/shipping-refactor.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-l6j1afmq/work/out/shipping-refactor.drawio.png) に作成しました。\n\nmain との差分と `notes.md` を基に、依存関係・SDK の生成場所・テストの前後を図解しています。PR に貼れる PNG で、draw.io での再編集も可能です。",
+          "files": [
+            {
+              "path": "gpt-6-astra/run-1/shipping-refactor.drawio.png",
+              "outside_out": false,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "codex-cli 0.156.0"
+        }
+      ]
+    },
+    "gpt-6-sol": {
+      "vendor": "codex",
+      "model": "gpt-6-sol",
+      "effort": "xhigh",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 547.5,
+          "cost_usd": null,
+          "input_tokens": 1233941,
+          "output_tokens": 19981,
+          "tool_calls": 36,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "main との差分と `notes.md` を基に、変更前後の依存関係とテストでの差し替え方を図にしました。送り状・PDF 保存先・メール文面が維持される点も記載しています。\n\n[PR 本文用の図を開く](</private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-7t1ja80a/work/out/shipping-ports.drawio.png>)。PNG に編集用の図データを埋め込み、表示とデータの読み取りを確認済みです。",
+          "files": [
+            {
+              "path": "gpt-6-sol/run-1/shipping-ports.drawio.png",
+              "outside_out": false,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "codex-cli 0.156.0"
+        }
+      ]
+    },
+    "gpt-6-luna": {
+      "vendor": "codex",
+      "model": "gpt-6-luna",
+      "effort": "xhigh",
+      "runs": [
+        {
+          "run": 1,
+          "started_at": "2026-09-26T13:01:00",
+          "seconds": 844.4,
+          "cost_usd": null,
+          "input_tokens": 1202978,
+          "output_tokens": 26387,
+          "tool_calls": 26,
+          "skill_used": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "errors": [],
+          "final_message": "[out/shipping-refactor.drawio.png](/private/var/folders/8l/x3c2h82d6jq8nr__fw3lwrzm0000gp/T/work-i2k6oly7/work/out/shipping-refactor.drawio.png) に図を置きました。変更前後の SDK 依存、ports と adapter、テスト方法、維持した出荷フローをまとめています。PNG には編集元 XML が埋め込まれています。\n\n再書き出しが draw.io で停止したため初回版を残しました。右側パネル上部の注入線ラベルが見出しに重なっています。`repo/` の作業ツリーには変更ありません。",
+          "files": [
+            {
+              "path": "gpt-6-luna/run-1/shipping-refactor.drawio.png",
+              "outside_out": false,
+              "same_as_template": null
+            }
+          ],
+          "skill": {
+            "path": "dot_agent-skills/explanatory-diagrams",
+            "sha256": "82b734928608356c2836b03e66db55b837aa55c3faae278b16aebd962fd4bdf2",
+            "commit": "ccb5e7908a44d916945c8840ba70d9f4681db503",
+            "dirty": false
+          },
+          "cli": "codex-cli 0.156.0"
+        }
+      ]
+    }
+  }
+}

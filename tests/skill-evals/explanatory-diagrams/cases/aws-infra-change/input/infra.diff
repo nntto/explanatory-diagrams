@@ -1,0 +1,405 @@
+diff --git a/infra/alb.tf b/infra/alb.tf
+index b89c854..2d99a02 100644
+--- a/infra/alb.tf
++++ b/infra/alb.tf
+@@ -32,9 +32,6 @@ resource "aws_lb" "main" {
+   load_balancer_type = "application"
+   security_groups    = [aws_security_group.alb.id]
+   subnets            = aws_subnet.public[*].id
+-
+-  # 商品画像のアップロードが回線の都合で途中で止まっても切れないように、既定の 60 秒から延ばしている
+-  idle_timeout = 300
+ }
+
+ resource "aws_lb_target_group" "api" {
+diff --git a/infra/cdn.tf b/infra/cdn.tf
+new file mode 100644
+index 0000000..8791b67
+--- /dev/null
++++ b/infra/cdn.tf
+@@ -0,0 +1,43 @@
++resource "aws_cloudfront_origin_access_control" "product_images" {
++  name                              = "${var.name}-product-images"
++  origin_access_control_origin_type = "s3"
++  signing_behavior                  = "always"
++  signing_protocol                  = "sigv4"
++}
++
++data "aws_cloudfront_cache_policy" "caching_optimized" {
++  name = "Managed-CachingOptimized"
++}
++
++# EC の商品ページと管理画面は、このドメインから画像を読む
++resource "aws_cloudfront_distribution" "product_images" {
++  enabled         = true
++  comment         = "${var.name} product images"
++  is_ipv6_enabled = true
++  price_class     = "PriceClass_200"
++
++  origin {
++    origin_id                = "product-images"
++    domain_name              = aws_s3_bucket.product_images.bucket_regional_domain_name
++    origin_access_control_id = aws_cloudfront_origin_access_control.product_images.id
++  }
++
++  default_cache_behavior {
++    target_origin_id       = "product-images"
++    viewer_protocol_policy = "redirect-to-https"
++    allowed_methods        = ["GET", "HEAD"]
++    cached_methods         = ["GET", "HEAD"]
++    cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
++    compress               = true
++  }
++
++  restrictions {
++    geo_restriction {
++      restriction_type = "none"
++    }
++  }
++
++  viewer_certificate {
++    cloudfront_default_certificate = true
++  }
++}
+diff --git a/infra/ecs.tf b/infra/ecs.tf
+index a2a1636..9001dae 100644
+--- a/infra/ecs.tf
++++ b/infra/ecs.tf
+@@ -67,19 +67,11 @@ resource "aws_iam_role" "api_task" {
+   assume_role_policy = data.aws_iam_policy_document.ecs_tasks_assume.json
+ }
+
++# 署名付き URL はこのロールで署名するので、URL で許す操作をこのロールにも許す
+ data "aws_iam_policy_document" "api_task" {
+   statement {
+-    actions = [
+-      "elasticfilesystem:ClientMount",
+-      "elasticfilesystem:ClientWrite",
+-    ]
+-    resources = [aws_efs_file_system.product_images.arn]
+-
+-    condition {
+-      test     = "StringEquals"
+-      variable = "elasticfilesystem:AccessPointArn"
+-      values   = [aws_efs_access_point.product_images.arn]
+-    }
++    actions   = ["s3:PutObject"]
++    resources = ["${aws_s3_bucket.product_images.arn}/originals/*"]
+   }
+ }
+
+@@ -96,9 +88,8 @@ resource "aws_ecs_task_definition" "api" {
+   execution_role_arn       = aws_iam_role.api_execution.arn
+   task_role_arn            = aws_iam_role.api_task.arn
+
+-  cpu = 512
+-  # アップロードされた画像をメモリに載せてから保存するので、多めにしている
+-  memory = 2048
++  cpu    = 512
++  memory = 1024
+
+   container_definitions = jsonencode([
+     {
+@@ -109,16 +100,13 @@ resource "aws_ecs_task_definition" "api" {
+       environment = [
+         { name = "DB_HOST", value = aws_db_instance.main.address },
+         { name = "DB_NAME", value = aws_db_instance.main.db_name },
+-        { name = "IMAGE_DIR", value = "/mnt/product-images" },
+-        { name = "IMAGE_BASE_URL", value = "https://api.example.com/images" },
++        { name = "IMAGE_BUCKET", value = aws_s3_bucket.product_images.bucket },
++        { name = "IMAGE_BASE_URL", value = "https://${aws_cloudfront_distribution.product_images.domain_name}" },
+       ]
+       secrets = [
+         { name = "DB_USER", valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:username::" },
+         { name = "DB_PASSWORD", valueFrom = "${aws_db_instance.main.master_user_secret[0].secret_arn}:password::" },
+       ]
+-      mountPoints = [
+-        { sourceVolume = "product-images", containerPath = "/mnt/product-images" },
+-      ]
+       logConfiguration = {
+         logDriver = "awslogs"
+         options = {
+@@ -129,20 +117,6 @@ resource "aws_ecs_task_definition" "api" {
+       }
+     },
+   ])
+-
+-  volume {
+-    name = "product-images"
+-
+-    efs_volume_configuration {
+-      file_system_id     = aws_efs_file_system.product_images.id
+-      transit_encryption = "ENABLED"
+-
+-      authorization_config {
+-        access_point_id = aws_efs_access_point.product_images.id
+-        iam             = "ENABLED"
+-      }
+-    }
+-  }
+ }
+
+ resource "aws_ecs_service" "api" {
+@@ -163,8 +137,5 @@ resource "aws_ecs_service" "api" {
+     container_port   = 8080
+   }
+
+-  depends_on = [
+-    aws_lb_listener.https,
+-    aws_efs_mount_target.product_images,
+-  ]
++  depends_on = [aws_lb_listener.https]
+ }
+diff --git a/infra/efs.tf b/infra/efs.tf
+deleted file mode 100644
+index f4d4ccf..0000000
+--- a/infra/efs.tf
++++ /dev/null
+@@ -1,58 +0,0 @@
+-resource "aws_efs_file_system" "product_images" {
+-  creation_token = "${var.name}-product-images"
+-  encrypted      = true
+-
+-  tags = {
+-    Name = "${var.name}-product-images"
+-  }
+-}
+-
+-resource "aws_efs_backup_policy" "product_images" {
+-  file_system_id = aws_efs_file_system.product_images.id
+-
+-  backup_policy {
+-    status = "ENABLED"
+-  }
+-}
+-
+-# API のタスクは、このアクセスポイントを通して /product-images だけを読み書きする
+-resource "aws_efs_access_point" "product_images" {
+-  file_system_id = aws_efs_file_system.product_images.id
+-
+-  posix_user {
+-    uid = 1000
+-    gid = 1000
+-  }
+-
+-  root_directory {
+-    path = "/product-images"
+-
+-    creation_info {
+-      owner_uid   = 1000
+-      owner_gid   = 1000
+-      permissions = "0755"
+-    }
+-  }
+-}
+-
+-resource "aws_security_group" "efs" {
+-  name   = "${var.name}-efs"
+-  vpc_id = aws_vpc.main.id
+-}
+-
+-resource "aws_vpc_security_group_ingress_rule" "efs_from_api" {
+-  security_group_id            = aws_security_group.efs.id
+-  referenced_security_group_id = aws_security_group.api.id
+-  ip_protocol                  = "tcp"
+-  from_port                    = 2049
+-  to_port                      = 2049
+-}
+-
+-# タスクを置く 2 つの AZ に 1 つずつ
+-resource "aws_efs_mount_target" "product_images" {
+-  count = length(local.azs)
+-
+-  file_system_id  = aws_efs_file_system.product_images.id
+-  subnet_id       = aws_subnet.app[count.index].id
+-  security_groups = [aws_security_group.efs.id]
+-}
+diff --git a/infra/outputs.tf b/infra/outputs.tf
+index 29fd8d3..2bbb3bc 100644
+--- a/infra/outputs.tf
++++ b/infra/outputs.tf
+@@ -6,6 +6,10 @@ output "db_endpoint" {
+   value = aws_db_instance.main.address
+ }
+
+-output "product_images_file_system_id" {
+-  value = aws_efs_file_system.product_images.id
++output "product_images_bucket" {
++  value = aws_s3_bucket.product_images.bucket
++}
++
++output "product_images_domain" {
++  value = aws_cloudfront_distribution.product_images.domain_name
+ }
+diff --git a/infra/s3.tf b/infra/s3.tf
+new file mode 100644
+index 0000000..186355a
+--- /dev/null
++++ b/infra/s3.tf
+@@ -0,0 +1,67 @@
++data "aws_caller_identity" "current" {}
++
++# 元の画像は originals/、サムネイルは thumbnails/ に置く
++resource "aws_s3_bucket" "product_images" {
++  bucket = "${var.name}-product-images-${data.aws_caller_identity.current.account_id}"
++}
++
++resource "aws_s3_bucket_public_access_block" "product_images" {
++  bucket = aws_s3_bucket.product_images.id
++
++  block_public_acls       = true
++  block_public_policy     = true
++  ignore_public_acls      = true
++  restrict_public_buckets = true
++}
++
++# 管理画面から、署名付き URL で直接 PUT する
++resource "aws_s3_bucket_cors_configuration" "product_images" {
++  bucket = aws_s3_bucket.product_images.id
++
++  cors_rule {
++    allowed_methods = ["PUT"]
++    allowed_origins = [var.admin_origin]
++    allowed_headers = ["Content-Type"]
++    max_age_seconds = 3000
++  }
++}
++
++# 読めるのは CloudFront（OAC）だけ
++data "aws_iam_policy_document" "product_images_bucket" {
++  statement {
++    actions   = ["s3:GetObject"]
++    resources = ["${aws_s3_bucket.product_images.arn}/*"]
++
++    principals {
++      type        = "Service"
++      identifiers = ["cloudfront.amazonaws.com"]
++    }
++
++    condition {
++      test     = "StringEquals"
++      variable = "AWS:SourceArn"
++      values   = [aws_cloudfront_distribution.product_images.arn]
++    }
++  }
++}
++
++resource "aws_s3_bucket_policy" "product_images" {
++  bucket = aws_s3_bucket.product_images.id
++  policy = data.aws_iam_policy_document.product_images_bucket.json
++
++  depends_on = [aws_s3_bucket_public_access_block.product_images]
++}
++
++# originals/ に置かれた画像だけを Lambda に渡す。
++# thumbnails/ は対象にしないので、Lambda が置いたサムネイルで Lambda がまた動くことはない
++resource "aws_s3_bucket_notification" "product_images" {
++  bucket = aws_s3_bucket.product_images.id
++
++  lambda_function {
++    lambda_function_arn = aws_lambda_function.thumbnail.arn
++    events              = ["s3:ObjectCreated:*"]
++    filter_prefix       = "originals/"
++  }
++
++  depends_on = [aws_lambda_permission.thumbnail_from_s3]
++}
+diff --git a/infra/thumbnail.tf b/infra/thumbnail.tf
+new file mode 100644
+index 0000000..0c4c1ad
+--- /dev/null
++++ b/infra/thumbnail.tf
+@@ -0,0 +1,79 @@
++locals {
++  # functions/thumbnail を CI でビルドした zip
++  thumbnail_package = "${path.module}/build/thumbnail.zip"
++}
++
++data "aws_iam_policy_document" "lambda_assume" {
++  statement {
++    actions = ["sts:AssumeRole"]
++
++    principals {
++      type        = "Service"
++      identifiers = ["lambda.amazonaws.com"]
++    }
++  }
++}
++
++resource "aws_iam_role" "thumbnail" {
++  name               = "${var.name}-thumbnail"
++  assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
++}
++
++resource "aws_iam_role_policy_attachment" "thumbnail_logs" {
++  role       = aws_iam_role.thumbnail.name
++  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
++}
++
++data "aws_iam_policy_document" "thumbnail" {
++  statement {
++    actions   = ["s3:GetObject"]
++    resources = ["${aws_s3_bucket.product_images.arn}/originals/*"]
++  }
++
++  statement {
++    actions   = ["s3:PutObject"]
++    resources = ["${aws_s3_bucket.product_images.arn}/thumbnails/*"]
++  }
++}
++
++resource "aws_iam_role_policy" "thumbnail" {
++  name   = "product-images"
++  role   = aws_iam_role.thumbnail.id
++  policy = data.aws_iam_policy_document.thumbnail.json
++}
++
++resource "aws_cloudwatch_log_group" "thumbnail" {
++  name              = "/aws/lambda/${var.name}-thumbnail"
++  retention_in_days = 30
++}
++
++# originals/<キー> を読み、幅 400px に縮めて thumbnails/<キー> に置く
++resource "aws_lambda_function" "thumbnail" {
++  function_name    = "${var.name}-thumbnail"
++  role             = aws_iam_role.thumbnail.arn
++  runtime          = "nodejs22.x"
++  handler          = "index.handler"
++  architectures    = ["arm64"]
++  filename         = local.thumbnail_package
++  source_code_hash = filebase64sha256(local.thumbnail_package)
++  memory_size      = 1024
++  timeout          = 30
++
++  environment {
++    variables = {
++      THUMBNAIL_PREFIX = "thumbnails/"
++      THUMBNAIL_WIDTH  = "400"
++    }
++  }
++
++  depends_on = [aws_cloudwatch_log_group.thumbnail]
++}
++
++resource "aws_lambda_permission" "thumbnail_from_s3" {
++  statement_id   = "AllowInvokeFromProductImages"
++  action         = "lambda:InvokeFunction"
++  function_name  = aws_lambda_function.thumbnail.function_name
++  principal      = "s3.amazonaws.com"
++  source_arn     = aws_s3_bucket.product_images.arn
++  source_account = data.aws_caller_identity.current.account_id
++}
+diff --git a/infra/variables.tf b/infra/variables.tf
+index 9d00f8a..1b5d69a 100644
+--- a/infra/variables.tf
++++ b/infra/variables.tf
+@@ -18,3 +18,9 @@ variable "certificate_arn" {
+   description = "api.example.com の証明書（ACM）。api.example.com は ALB を指す"
+   type        = string
+ }
++
++variable "admin_origin" {
++  description = "管理画面のオリジン。ブラウザから S3 へのアップロードを CORS で許す"
++  type        = string
++  default     = "https://admin.example.com"
++}

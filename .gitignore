@@ -1,0 +1,8 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# eval の実行結果（出力画像と記録）はコミットしない。残す結果は publish で outputs/ に写す
+tests/skill-evals/*/results/
+tests/skill-evals/**/node_modules/
+tests/skill-evals/**/shots/

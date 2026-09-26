@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>架空の雑貨店 管理画面</title>
+<style>
+  html, body { margin: 0; background: #f5f5f5; font-family: -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; }
+  #root { padding: 24px; }
+  .row { display: inline-flex; align-items: center; gap: 12px; background: #fafafa; padding: 16px; }
+  .row-label { width: 120px; font-weight: 600; }
+</style>
+<script src="node_modules/react/umd/react.production.min.js"></script>
+<script src="node_modules/react-dom/umd/react-dom.production.min.js"></script>
+<script src="node_modules/dayjs/dayjs.min.js"></script>
+<script src="node_modules/dayjs/locale/ja.js"></script>
+<script src="node_modules/antd/dist/antd-with-locales.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const h = React.createElement;
+const { ConfigProvider, DatePicker, Button, Table, Tag, Alert, Form, Input, Select, Card, Typography, Space, Layout } = antd;
+dayjs.locale('ja');
+
+const BRAND = '#5b4636';
+const BRAND_SOFT = '#f2ede8';
+const THEMES = {
+  // 見本：主色 1 色だけを渡す（前）→ 薄い背景と link の色も渡す（後）
+  'tpl-before': { colorPrimary: BRAND },
+  'tpl-after': { colorPrimary: BRAND, colorPrimaryBg: BRAND_SOFT, colorLink: BRAND },
+  // ケース A：状態の色を AntD の既定（前）→ ブランドに合わせた落ち着いた色（後）
+  'status-before': { colorPrimary: BRAND, colorPrimaryBg: BRAND_SOFT, colorLink: BRAND },
+  'status-after': { colorPrimary: BRAND, colorPrimaryBg: BRAND_SOFT, colorLink: BRAND,
+                    colorSuccess: '#2f7d4f', colorSuccessBg: '#e9f2ec', colorSuccessBorder: '#a9ccb5',
+                    colorWarning: '#b7791f', colorError: '#b83a2e' },
+};
+
+const params = new URLSearchParams(location.search);
+const view = params.get('view') || 'picker';
+const themeName = params.get('theme') || 'tpl-before';
+
+function PickerView() {
+  return h('div', { style: { height: 420 } },
+    h(Typography.Text, { style: { display: 'block', marginBottom: 8 } }, 'お届け希望日'),
+    h(DatePicker.RangePicker, {
+      id: 'range', open: true, autoFocus: true, style: { width: 300 },
+      defaultValue: [dayjs('2026-01-15'), dayjs('2026-01-20')],
+      defaultPickerValue: [dayjs('2026-01-01'), dayjs('2026-02-01')],
+      getPopupContainer: (n) => n.parentNode,
+    }));
+}
+
+function ButtonsView() {
+  return h('div', { className: 'row', id: 'buttons' },
+    h(Button, { type: 'primary' }, '保存'),
+    h(Button, null, 'キャンセル'),
+    h(Button, { type: 'dashed' }, '追加'),
+    h(Button, { type: 'text' }, '閉じる'),
+    h(Button, { type: 'link' }, '詳細'),
+    h(Button, { danger: true }, '削除'),
+    h(Button, { type: 'primary', disabled: true }, '保存'),
+    h(Button, { type: 'primary', loading: true }, '保存中'));
+}
+
+const PAY = { paid: ['success', '支払い済み'], unpaid: ['warning', '未入金'], failed: ['error', '決済エラー'] };
+const SHIP = { shipped: ['success', '出荷済み'], waiting: ['processing', '出荷待ち'], hold: ['warning', '保留'], canceled: ['error', 'キャンセル'] };
+const ORDERS = [
+  ['O-1042', '2026-01-20', '青木 一郎', 12800, 'paid', 'shipped'],
+  ['O-1043', '2026-01-20', '石田 花', 4200, 'unpaid', 'hold'],
+  ['O-1044', '2026-01-21', '上野 健', 23100, 'paid', 'waiting'],
+  ['O-1045', '2026-01-21', '江口 早紀', 8600, 'failed', 'hold'],
+  ['O-1046', '2026-01-22', '小川 修', 3300, 'unpaid', 'canceled'],
+  ['O-1047', '2026-01-22', '加藤 真央', 15400, 'paid', 'waiting'],
+];
+
+function OrdersView() {
+  const columns = [
+    { title: '注文番号', dataIndex: 'id' },
+    { title: '注文日', dataIndex: 'date' },
+    { title: 'お客様', dataIndex: 'customer' },
+    { title: '金額', dataIndex: 'amount', align: 'right', render: (v) => '¥' + v.toLocaleString() },
+    { title: '支払い', dataIndex: 'pay', render: (k) => h(Tag, { color: PAY[k][0] }, PAY[k][1]) },
+    { title: '出荷', dataIndex: 'ship', render: (k) => h(Tag, { color: SHIP[k][0] }, SHIP[k][1]) },
+    { title: '', dataIndex: 'id', key: 'action', render: () => h(Button, { type: 'link', size: 'small' }, '詳細') },
+  ];
+  const data = ORDERS.map(([id, date, customer, amount, pay, ship]) => ({ key: id, id, date, customer, amount, pay, ship }));
+  return h(Card, { title: '注文一覧', id: 'orders', style: { width: 960 } },
+    h(Space, { direction: 'vertical', size: 12, style: { width: '100%' } },
+      h(Alert, { type: 'warning', showIcon: true, message: '未入金の注文が 2 件あります。入金期限は注文日から 7 日です。' }),
+      h(Alert, { type: 'error', showIcon: true, message: '決済エラーの注文が 1 件あります。お客様に支払い方法の変更を依頼してください。' }),
+      h(Table, { columns, dataSource: data, pagination: false, size: 'middle' })));
+}
+
+function FormView() {
+  const [form] = Form.useForm();
+  React.useEffect(() => { form.validateFields().catch(() => {}); }, []);
+  return h(Card, { title: '注文 O-1043 のお届け先', id: 'form', style: { width: 640 } },
+    h(Space, { direction: 'vertical', size: 12, style: { width: '100%' } },
+      h(Alert, { type: 'success', showIcon: true, message: '支払い方法を保存しました。' }),
+      h(Alert, { type: 'error', showIcon: true, message: '入力内容に誤りがあります。赤枠の項目を確認してください。' }),
+      h(Form, { form, layout: 'vertical', initialValues: { zip: '15000', address: '東京都渋谷区', tel: '03-0000-0000', method: 'normal' } },
+        h(Form.Item, { label: '郵便番号', name: 'zip', rules: [{ pattern: /^\d{7}$/, message: '郵便番号は 7 桁の数字で入力してください' }] }, h(Input)),
+        h(Form.Item, { label: '住所', name: 'address', validateStatus: 'warning', help: '番地が入っていません。このままでも保存できます' }, h(Input)),
+        h(Form.Item, { label: '電話番号', name: 'tel' }, h(Input)),
+        h(Form.Item, { label: '配送方法', name: 'method' }, h(Select, { options: [{ value: 'normal', label: '通常配送' }, { value: 'express', label: 'お急ぎ便' }] })),
+        h(Space, null, h(Button, { type: 'primary' }, '保存'), h(Button, null, 'キャンセル')))));
+}
+
+const VIEWS = { picker: PickerView, buttons: ButtonsView, orders: OrdersView, form: FormView };
+ReactDOM.createRoot(document.getElementById('root')).render(
+  h(ConfigProvider, { locale: antd.locales.ja_JP, theme: { token: THEMES[themeName] } }, h(VIEWS[view])));
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "skill": "dot_agent-skills/explanatory-diagrams",
+  "drawio": "/Applications/draw.io.app/Contents/MacOS/draw.io",
+  "cases": {
+    "design-token-change": {
+      "references": ["templates/design-before-after/design-before-after.drawio.png"]
+    },
+    "aws-infra-change": {
+      "references": ["templates/aws-architecture/aws-architecture.drawio.png", "templates/before-after-diff/before-after-diff.drawio.png"]
+    },
+    "refactor-dependency-inversion": {
+      "workspace": "、`input/before` を main、`input/after` を作業ブランチのコミットにした git リポジトリ `repo/` と、`notes.md` を作業場所に置く",
+      "references": ["templates/before-after-split/before-after-split.drawio.png", "templates/refactor-extract-module/refactor-extract-module.drawio.png"]
+    }
+  },
+  "models": [
+    {"id": "opus-5.5", "vendor": "claude", "model": "claude-opus-5-5", "effort": "high"},
+    {"id": "sonnet-5", "vendor": "claude", "model": "claude-sonnet-5", "effort": "high"},
+    {"id": "haiku-4.5", "vendor": "claude", "model": "claude-haiku-4-5-20251001", "effort": "high"},
+    {"id": "fable-5.1", "vendor": "claude", "model": "claude-fable-5-1", "effort": "high"},
+    {"id": "gpt-6-astra", "vendor": "codex", "model": "gpt-6-astra", "effort": "high"},
+    {"id": "gpt-6-sol", "vendor": "codex", "model": "gpt-6-sol", "effort": "xhigh"},
+    {"id": "gpt-6-luna", "vendor": "codex", "model": "gpt-6-luna", "effort": "xhigh"}
+  ]
+}
