@@ -20,7 +20,7 @@ The samples drawn with shapes share one made-up online store (orders, payments, 
 
 The subjects, names, figures, and business rules in the samples (such as the refund auto-approval limit and shipping fees) are all made up.
 
-Every sample is a `.drawio.svg` file that you can open and edit in draw.io. What the colors and line styles mean is described in [references/drawio-style.md](../../../skills/explanatory-diagrams/references/drawio-style.md) (in Japanese).
+Every sample is a `.drawio.svg` file that you can open and edit in draw.io. The colors and the ways to draw lines and symbols are listed in [references/drawio-style.md](../../../skills/explanatory-diagrams/references/drawio-style.md) (in Japanese).
 
 ## Ways to show a change
 
@@ -32,19 +32,19 @@ When to use: changes where the difference in structure is the point. Before and 
 
 ### Overlay the diff on one diagram
 
-When to use: changes that touch only part of the whole. On the "after" diagram, overlay what was added (blue frame) and what was removed (gray dashed line and ✕).
+When to use: changes that touch only part of the whole. On the "after" diagram, overlay what was added and what was removed. This sample outlines what was added in blue and marks what was removed with a gray dashed line and ✕.
 
 ![AWS architecture diagram with the diff overlaid, titled "Offload email to SQS and Lambda, responding without waiting"](before-after-diff.drawio.svg)
 
 ### Compare design changes on screenshots
 
-When to use: changes to how things look, such as color, spacing, or corner radius. Put the real screens from before and after side by side (stack wide components vertically), and outline the parts to look at in orange. Number the outlines and match them to a table of the changed values.
+When to use: changes to how things look, such as color, spacing, or corner radius. Put the real screens from before and after side by side (stack wide components vertically), and outline the parts to look at. Number the outlines and match them to a table of the changed values. This sample draws the outlines in orange.
 
 ![Before/after screenshots side by side, titled "Match date range fill, focus ring & link color to store"](design-before-after.drawio.svg)
 
 ### Compare color palettes before and after
 
-When to use: changes that replace a theme's color steps (background, border, fill, text) all at once. Line up the steps in columns. For each color that changes, put the "before" row above the "after" row; show unchanged colors only once. Outline problem steps in orange and changed values in blue.
+When to use: changes that replace a theme's color steps (background, border, fill, text) all at once. Line up the steps in columns. For each color that changes, put the "before" row above the "after" row; show unchanged colors only once. Outline the problem steps and the changed values. This sample outlines problem steps in orange and changed values in blue.
 
 ![Before/after color palette titled "Define 10 primary steps to remove gray steps"](palette-before-after.drawio.svg)
 
@@ -52,7 +52,7 @@ When to use: changes that replace a theme's color steps (background, border, fil
 
 ### Move where state lives
 
-When to use: refactorings that move state out of a hook or module into another place. Show the state being moved in orange and its new home in blue, and note that the number of states stays the same.
+When to use: refactorings that move state out of a hook or module into another place. Show the state being moved and its new home, and note that the number of states stays the same. This sample shows the state being moved in orange and its new home in blue.
 
 ![Side-by-side before/after diagram titled "Extract 3 states from useOrderEditor into useDraft"](refactor-move-state.drawio.svg)
 
@@ -76,7 +76,7 @@ When to use: refactorings that merge the state each component kept on its own in
 
 ### Remove a value that was copied and passed along
 
-When to use: refactorings in multi-stage processing that remove a copied value passed from stage to stage, so that every step reads the original. Split the data, the steps that read it, and the results into bands, and overlay before and after in one diagram. Show what was removed with orange dashed lines and strikethrough, and show the value now read, and the values it affects, in blue.
+When to use: refactorings in multi-stage processing that remove a copied value passed from stage to stage, so that every step reads the original. Split the data, the steps that read it, and the results into bands, and overlay before and after in one diagram. This sample shows what was removed with orange dashed lines and strikethrough, and shows the value now read, and the values it affects, in blue.
 
 ![Before and after overlaid in one diagram, titled "Remove passed-around display_name and read name directly"](refactor-remove-duplicate.drawio.svg)
 
