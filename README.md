@@ -6,7 +6,7 @@ An agent skill that lets Claude Code and Codex draw diagrams for pull request de
 
 ## Samples
 
-**[Browse all 18 samples](docs/samples/en/README.md)**: before/after comparisons, refactoring explanations, and diagram types such as architecture, sequence, state machine, and ER diagrams, each with notes on when to use it. The agent picks the closest sample and follows its style.
+**[Browse all 20 samples](docs/samples/en/README.md)**: before/after comparisons, refactoring explanations, and diagram types such as architecture, sequence, state machine, and ER diagrams, each with notes on when to use it. The agent picks the closest sample and follows its style.
 
 **AWS architecture diagram.** An order API deployed across two Availability Zones (AZs), so it keeps taking orders if one of them fails. The steps of the request flow are numbered.
 

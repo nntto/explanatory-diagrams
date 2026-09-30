@@ -2,7 +2,7 @@ English | [简体中文](../zh-CN/README.md) | [日本語](../../../skills/expla
 
 # Samples
 
-This page lists the 18 samples and when to use each one. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
+This page lists the 20 samples and when to use each one. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
 
 The skill itself ships only the Japanese samples and their [Japanese list](../../../skills/explanatory-diagrams/templates/README.md). The agent reaches that list from [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md), finds a close sample, and translates its text when the target document is in another language. This page is not part of the skill.
 
@@ -47,6 +47,12 @@ When to use: changes to how things look, such as color, spacing, or corner radiu
 When to use: changes that replace a theme's color steps (background, border, fill, text) all at once. Line up the steps in columns. For each color that changes, put the "before" row above the "after" row; show unchanged colors only once. Outline the problem steps and the changed values. This sample outlines problem steps in orange and changed values in blue.
 
 ![Before/after color palette titled "Define 10 primary steps to remove gray steps"](palette-before-after.drawio.svg)
+
+### Compare amounts by size
+
+When to use: changes where the change in amount is the point, such as lines of code. Stack blocks whose height is proportional to the amount, and note the scale. Connect each block to where it goes, such as unchanged, moved, or taken over, with an arrow.
+
+![Before/after blocks sized by line count, titled "The order edit page's hook goes from 160 lines to 70"](before-after-amount.drawio.svg)
 
 ## Refactoring explanations
 
@@ -135,6 +141,12 @@ When to use: explaining which part of a screen holds each piece of state, and wh
 When to use: explaining logic where the lines that run, or the value returned, depend on the input. Align each line of code with the values it evaluates to for each input.
 
 ![Code and the values evaluated for 3 inputs, titled "shippingFee condition checks and execution flow across 3 inputs"](code-trace.drawio.svg)
+
+### Timeline and deadlines
+
+When to use: explaining logic decided by what happens after how many minutes, such as deadlines, timeouts, and retry intervals. Put events as dots on a timeline with ticks, and show the deadline each event sets as an arrow. Write the rules as text beside it.
+
+![Timeline where a cart hold's deadline is extended by each action and released when actions stop, titled "Release a cart hold 15 minutes after the last action"](timeline.drawio.svg)
 
 ## Adding a sample
 
