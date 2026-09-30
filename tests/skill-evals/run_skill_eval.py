@@ -35,7 +35,7 @@ from pathlib import Path
 EVALS_ROOT = Path(__file__).resolve().parent
 REPO = EVALS_ROOT.parents[1]
 IGNORED = {"__pycache__", ".DS_Store", "results"}
-# 図として扱う拡張子。skill の出力と見本は .drawio.svg にしたが、それより前の記録は .drawio.png なので両方を扱う
+# 図として扱う拡張子。skill の出力とサンプルは .drawio.svg にしたが、それより前の記録は .drawio.png なので両方を扱う
 IMAGE_SUFFIXES = (".svg", ".png")
 # plugin の形に包むときの名前。.claude-plugin/marketplace.json の plugin 名にそろえる
 PLUGIN_NAME = "explanatory-diagrams"
@@ -289,7 +289,7 @@ def cmd_run(args):
         sys.exit("ケースかモデルが見つからない")
 
     out = suite_dir / "results" / dt.datetime.now().strftime("%Y%m%d-%H%M%S")
-    snapshot = out / "_skill" / skill_dir.name  # 記録と、見本を写しただけの出力の見分けに使う。実行には一時ディレクトリの写しを渡す
+    snapshot = out / "_skill" / skill_dir.name  # 記録と、サンプルを写しただけの出力の見分けに使う。実行には一時ディレクトリの写しを渡す
     copy_tree(skill_dir, snapshot)
     for c in cases:
         copy_tree(c["dir"] / "input", out / "_inputs" / c["name"])
@@ -344,8 +344,13 @@ def image_hashes(root: Path) -> dict:
 
 
 def scrub_paths(text: str) -> str:
-    """最後の返答に残る、実行ごとの一時ディレクトリの絶対パスを <workspace> に置き換える（マシン固有の情報を公開しない）。"""
-    return re.sub(r"(?:/private)?(?:/var/folders/[^\s)`\]]*?|/tmp)/work-[^/\s)`\]]+/work", "<workspace>", text)
+    """最後の返答に残る、実行ごとの一時ディレクトリの絶対パスを <workspace> に置き換える（マシン固有の情報を公開しない）。
+
+    Markdown のリンク先を `(</abs/.../out/a.svg>)` のように山かっこで囲んだパスは、囲みごと置き換える。
+    パスの前半だけを置き換えると `<<workspace>/out/a.svg>` になるため。山かっこの中はスペースを含んでよい。"""
+    workspace = r"(?:/private)?(?:/var/folders/[^\s)`\]]*?|/tmp)/work-[^/\s)`\]]+/work"
+    text = re.sub(rf"<{workspace}([^<>\n]*)>", r"<workspace>\1", text)
+    return re.sub(workspace, "<workspace>", text)
 
 
 def token_counts(vendor: str, usage: dict | None) -> tuple[int | None, int | None]:
@@ -532,7 +537,7 @@ def case_section(case_dir: Path, data: dict, suite: dict, files_root: Path, page
         lines.append("</tr></table>")
     refs = case_conf.get("references", [])
     if refs:
-        lines += ["", "近い見本（skill の中）：" + "、".join(
+        lines += ["", "関連するサンプル（skill の中）：" + "、".join(
             f"[{Path(r).parent.name}]({rel(skill_dir / r)})" for r in refs)]
 
     models = sorted(data["models"].items(), key=lambda kv: order.index(kv[0]) if kv[0] in order else len(order))
@@ -543,7 +548,7 @@ def case_section(case_dir: Path, data: dict, suite: dict, files_root: Path, page
             tokens = f"{run['input_tokens']:,}／{run['output_tokens']:,}" if run.get("input_tokens") is not None else "—"
             status = "時間切れ" if run["timed_out"] else ("" if run["exit_code"] == 0 else f"終了コード {run['exit_code']}")
             outs = "、".join(Path(f["path"]).name + ("（out/ の外）" if f.get("outside_out") else "")
-                            + ("（見本と同じ）" if f["same_as_template"] else "") for f in run["files"]) or "なし"
+                            + ("（サンプルと同じ）" if f["same_as_template"] else "") for f in run["files"]) or "なし"
             lines.append(f"| [{mid}](#{run_anchor(case_dir.name, mid, run, m['runs'])}) | {m['effort']} | {run['seconds']:.0f} 秒 | {cost} | {tokens} | "
                          f"{run['tool_calls']} 回 | {'読んだ' if run['skill_used'] else '読んでいない'} | "
                          f"{md_cell(status + ('：' if status else '') + outs)} |")
@@ -559,7 +564,7 @@ def case_section(case_dir: Path, data: dict, suite: dict, files_root: Path, page
                     if f.get("outside_out"):
                         lines.append(f"\n{Path(f['path']).name} は、依頼した out/ ではなく `{f.get('location') or f['path'].split('/', 2)[2]}` に置かれていた。")
                     if f["same_as_template"]:
-                        lines.append(f"\n{Path(f['path']).name} は見本 `{f['same_as_template']}` と同じ画像（見本を写しただけ）。")
+                        lines.append(f"\n{Path(f['path']).name} はサンプル `{f['same_as_template']}` と同じ画像（サンプルを写しただけ）。")
                     lines.append("")
                 else:
                     lines.append(f"- [{Path(f['path']).name}]({base}/{f['path']})")

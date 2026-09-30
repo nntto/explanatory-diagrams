@@ -1,4 +1,4 @@
-# draw.io での画像の取り込み・書き出し・貼り付け
+# draw.io での画像の取り込み・書き出し
 
 ## 既存図の再利用
 
@@ -43,7 +43,7 @@ python3 -c 'import base64,sys; print("data:image/png," + base64.b64encode(open(s
 - base64 化すると元ファイルサイズの約 1.33 倍になる。数百 KB までは実用上問題ない。大きい画像は縮小するか、必要な範囲だけ切り出してから埋め込む。
 - 書き出した図で、スクリーンショット内の文字が読めるかを確認する。縮小しすぎると文字が潰れる。
 
-画面の前後比較の見本は [templates/design-before-after](../templates/design-before-after/design-before-after.drawio.svg) にある。
+画面の前後比較のサンプルは [samples/design-before-after](../samples/design-before-after/design-before-after.drawio.svg) にある。
 
 他者の画面や資料を取り込むときは、既存図の再利用と同じく出典と利用条件を残す。
 
@@ -52,9 +52,19 @@ python3 -c 'import base64,sys; print("data:image/png," + base64.b64encode(open(s
 
 ## 書き出し
 
-図は、編集元の XML を埋め込んだ SVG（`.drawio.svg`）1 つで渡す。表示用の画像と編集用の `.drawio` を別々に残さない。
+図は、編集元の XML を埋め込んだ画像 1 つで渡す。表示用の画像と編集用の `.drawio` を別々に残さない。ふつうは SVG（`.drawio.svg`）で渡す。
 
-書き出す前に、XML の `<mxGraphModel>` に `background="#ffffff"` を付ける。ほかの属性はそのまま残す。見本から取り出した XML には、すでに付いている。
+| 形式 | 拡張子 | 編集元の埋め込み | 使う場面 |
+|---|---|---|---|
+| SVG | `.drawio.svg` | できる | ふつうはこれ。拡大してもにじまない |
+| PNG | `.drawio.png` | できる | SVG を貼れない場所に貼るとき |
+| PDF | `.drawio.pdf` | できる | 文書に添えるときや、印刷するとき |
+| JPG | `.jpg` | できない | 編集元が残らないので使わない |
+
+- 編集元が埋め込まれるのは、書き出すときに `-e` を付けたときだけ。付けないと、ふつうの画像になる。
+- 埋め込んだ形式からは、どれも同じコマンドで XML を取り出せる（下の「`.drawio.svg` を編集する」）。SVG・PNG・PDF で確かめた。
+
+書き出す前に、XML の `<mxGraphModel>` に `background="#ffffff"` を付ける。ほかの属性はそのまま残す。サンプルから取り出した XML には、すでに付いている。
 
 ```xml
 <mxGraphModel background="#ffffff" ...>
@@ -68,7 +78,7 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 
 - `-e` は編集元の XML を SVG に埋め込む。この SVG を draw.io で開くと、元の図として編集できる。SVG 1 つが表示と編集元を兼ねる。
 - `-b` は余白（px）。
-- `--embed-svg-fonts false` を付ける。付けないと、draw.io が文字のラベルを 1 つずつ PNG の画像にして埋め込み、ファイルが大きくなる。見本の 1 枚では、付けると 71KB、付けないと 1.1MB だった。
+- `--embed-svg-fonts false` を付ける。付けないと、draw.io が文字のラベルを 1 つずつ PNG の画像にして埋め込み、ファイルが大きくなる。サンプルの 1 枚では、付けると 71KB、付けないと 1.1MB だった。
 - 白の背景（`background="#ffffff"`）と `--theme light` は両方付ける。
   - 白の背景を付けないと、背景が透明になる。GitHub のダークモードでは、暗い背景に暗い文字が乗って読めなくなる。
   - `--theme light` を付けないと、色が `light-dark()` で見る人の配色に合わせて変わり、描いた色のとおりに表示されない。
@@ -77,9 +87,19 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 - 書き出した図をブラウザで開き、文字と線の読みやすさ、説明する対象の対応・個数・関係が保たれていることを確認する。macOS の Quick Look のサムネイルは図の端を切り落とすので、確認に使わない。
 - XML の `fig.drawio` は書き出し用の中間ファイル。書き出した後は残さない。
 
+PNG と PDF は、次のように書き出す。白の背景と `--theme light` は SVG と同じく付ける。
+
+```bash
+/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -b 20 --theme light -o fig.drawio.png fig.drawio
+/Applications/draw.io.app/Contents/MacOS/draw.io -x -f pdf -e --crop -b 20 --theme light -o fig.drawio.pdf fig.drawio
+```
+
+- PNG の `-s 2` は 2 倍の大きさで書き出す。拡大したときににじみにくい。
+- PDF の `--crop` は、ページを図の大きさに切り詰める。付けないと、図がレターサイズ（612×792pt）のページに置かれる。
+
 ## `.drawio.svg` を編集する
 
-テンプレートや既存の図を XML で編集するときは、`.drawio.svg` から XML を取り出し、編集後に `.drawio.svg` へ書き出し直す。
+既存の図を XML で編集するときは、`.drawio.svg` から XML を取り出し、編集後に `.drawio.svg` へ書き出し直す。サンプルの XML を読むときも、同じコマンドで取り出す。
 
 ```bash
 /Applications/draw.io.app/Contents/MacOS/draw.io -x -f xml -o fig.drawio fig.drawio.svg
@@ -87,27 +107,8 @@ draw.io のデスクトップ版で、XML から `.drawio.svg` を書き出す�
 /Applications/draw.io.app/Contents/MacOS/draw.io -x -f svg -e -b 20 --embed-svg-fonts false --theme light -o fig.drawio.svg fig.drawio
 ```
 
+PNG と PDF も、`fig.drawio.svg` を `fig.drawio.png` や `fig.drawio.pdf` に替えれば、同じコマンドで XML を取り出せる。
+
 取り出した XML は、属性の順序や `x="0"` の省略など表記が変わることがあるが、図の内容は変わらない。
 
 数値から決まる境界や探索経路などを示す場合は、図が示す条件と結果を原典や計算で確かめる。確認できない主張は、根拠のある範囲へ修正するか、図から外す。
-
-## PR への貼り付け
-
-- 本文は `--body-file`、画像は `--attach` で渡す。本文中の同じローカルパスの画像参照は、アップロード先の URL に置き換わる。
-- 添付するのは `.drawio.svg`。編集元は SVG に含まれるため、`.drawio` の XML を本文に同梱しない。`--attach` は画像と動画しか受け付けず、`.drawio` は渡せない。
-- GitHub は、PR やコメントへの SVG の添付に対応している。ただし、`gh pr edit --attach` で SVG を渡せるかは確かめていない（help には image or video とある）。
-
-```bash
-gh pr edit -R <owner/repo> <number> --body-file body.md --attach './fig.drawio.svg#alt'
-```
-
-- gh が 0 以外で終わったら、添付に失敗したものがある。help によると、このとき PR は成功した添付だけで更新される。SVG を渡せなかったときは、本文の画像の参照を `./fig.drawio.png` に替え、`.drawio.svg` から PNG を書き出して貼り直す。
-
-```bash
-/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -b 20 -o fig.drawio.png fig.drawio.svg
-gh pr edit -R <owner/repo> <number> --body-file body.md --attach './fig.drawio.png#alt'
-```
-
-- `-s 2` は 2 倍の大きさで書き出す。拡大したときににじみにくい。
-- `.drawio.svg` はリポジトリにコミットしない。設計ドキュメントとして残す場合だけ、`docs/` 配下に `.drawio.svg` を置く。
-- scratchpad などリポジトリ外から実行するときは `-R` が必要。
