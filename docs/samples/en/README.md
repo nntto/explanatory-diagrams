@@ -2,7 +2,7 @@ English | [简体中文](../zh-CN/README.md) | [日本語](../../../skills/expla
 
 # Samples
 
-This page lists the 20 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
+This page lists the 21 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
 
 The skill itself ships only the Japanese samples and their [Japanese list](../../../skills/explanatory-diagrams/samples/README.md). The agent reaches that list from [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) and borrows ways of showing things from the samples. The samples are examples of what can be expressed, not templates to fill in. This page is not part of the skill.
 
@@ -53,6 +53,12 @@ Example: changes that replace a theme's color steps (background, border, fill, t
 Example: changes where the change in amount is the point, such as lines of code. Stack blocks whose height is proportional to the amount, and note the scale. Connect each block to where it goes, such as unchanged, moved, or taken over, with an arrow.
 
 ![Before/after blocks sized by line count, titled "The order edit page's hook goes from 160 lines to 70"](before-after-amount.drawio.svg)
+
+### Compare what you write to add one feature
+
+Example: refactorings or design options where the point is that the next feature takes fewer edits. Take one feature to add, and put the files and lines you would write before and after the change side by side as code snippets. Shade only the lines to add, number the files in the order you edit them, and draw files that go away as dashed outlines. Sum up the number of files and lines to edit in a table below, as "before → after". This sample shades the lines to add before the change in orange and after the change in blue.
+
+![Code snippets side by side showing the lines to write to add a "Duplicate" Server Action to the product list, before and after removing ProductPage, titled "Drop ProductPage, and adding a Server Action takes half the lines"](before-after-edit-points.drawio.svg)
 
 ## Refactoring explanations
 
