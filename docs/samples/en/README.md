@@ -2,7 +2,7 @@ English | [简体中文](../zh-CN/README.md) | [日本語](../../../skills/expla
 
 # Samples
 
-This page lists the 21 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
+This page lists the 22 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
 
 The skill itself ships only the Japanese samples and their [Japanese list](../../../skills/explanatory-diagrams/samples/README.md). The agent reaches that list from [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) and borrows ways of showing things from the samples. The samples are examples of what can be expressed, not templates to fill in. This page is not part of the skill.
 
@@ -153,6 +153,12 @@ Example: explaining logic where the lines that run, or the value returned, depen
 Example: logic decided by what happens after how many minutes, such as deadlines, timeouts, and retry intervals. Put events as dots on a timeline with ticks, and show the deadline each event sets as an arrow. Write what each arrow means at its tip, and write the rules as text beside the timeline.
 
 ![Timeline where a cart hold's deadline is extended by each action and released when actions stop, titled "Release a cart hold 15 minutes after the last action"](timeline.drawio.svg)
+
+### Test items
+
+Example: show what a PR checks, one row per user, action, and condition. Group the rows by what they check, such as who can use the feature, which values are accepted, and the effect on other screens. Give each row an expected result and how it is checked, and use chips to tell automated tests (with their layer) from checks a person does in an environment. For rows a person checks, add the steps in small text under the expected result. This sample gives the chips for manual checks an orange border.
+
+![Table of test items for the cancel-order API, grouped into who can cancel, which orders can be canceled, refund and stock, and effect on other screens](test-items.drawio.svg)
 
 ## Adding a sample
 
