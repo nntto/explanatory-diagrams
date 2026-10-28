@@ -27,8 +27,6 @@ description: "Explains changes and systems with diagrams: before/after compariso
 | 業務の手順や担当範囲 | BPMN、スイムレーン |
 | 実際の画面、既存資料の図 | 画像の埋め込み（後述） |
 
-アイコンなどのアセットは、読み手がその形を見て意味を取れるときだけ使う。AWS のサービスアイコンや UML の記号のように、形そのものが決まった意味を持つ場合がこれに当たる。仕組みの全体の形のような抽象的な図は、基本図形と文字で描く。アイコンを足すと、形の種類が増えるのに意味は増えず、どの形が何を表すかが読み取りにくくなる。
-
 アセットの仕様や連携方法の参照先は [references/drawio-assets.md](references/drawio-assets.md) にある。
 
 ## 画像を埋め込む
@@ -53,13 +51,13 @@ draw.io は PNG などの画像を図の中に埋め込める。図形で描き�
 
 大きさ、配色、線と記号の規約は [references/drawio-style.md](references/drawio-style.md) にある。
 
-凡例と直接ラベルの使い分け、帯と形の意味のそろえ方、図の文言の選び方のように、図を読みやすくする作法とその根拠は [practices/README.md](practices/README.md) にある。
+凡例と直接ラベルの使い分けや、帯と形の意味のそろえ方のように、図を読みやすくする作法とその根拠は [practices/README.md](practices/README.md) にある。
 
 `samples/` の `.drawio.svg` は、この skill でどんな表現ができるかを示すサンプル。一覧と、それぞれが示している表現は [samples/README.md](samples/README.md) にある。サンプルは、変更前後の比べ方のような「見せ方」、それをよくあるリファクタリングに当てはめた「リファクタリングの説明」、構成図やシーケンス図のような「図の種類」に分かれている。
 
 サンプルは型ではない。当てはまるものを選んで文言を差し替えるのではなく、説明する対象に合わせて図を組み立て、使えそうな表現をサンプルから取り入れる。たとえば変更を説明するときは、図の種類のサンプルの記法で描き、見せ方のサンプルの方法で変更点を示す。1 枚の図に、いくつかのサンプルの表現を組み合わせてよい。
 
-図の文言は、図を載せる先の文書の言語で書く。英語の言い回しを直訳せず、その言語でふつうに使う語を選ぶ（[practices/natural-wording/README.md](practices/natural-wording/README.md)）。
+図の文言は、図を載せる先の文書の言語で書く。
 
 画像の取り込み、既存図の再利用、書き出し、確認は [references/drawio-workflow.md](references/drawio-workflow.md) に従う。
 
