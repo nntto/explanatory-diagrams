@@ -1,6 +1,6 @@
 # draw.io のアセット資料
 
-図形の仕様や連携方法は、公式資料を参照できる。
+図形の仕様や連携方法は、公式資料を参照できる。アセットを使うかどうかは、読み手がその形を見て意味を取れるかで決める（[practices/layers-and-shapes/README.md](../practices/layers-and-shapes/README.md)）。
 
 | 知りたいこと | 公式資料 |
 |---|---|

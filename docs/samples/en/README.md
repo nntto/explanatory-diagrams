@@ -2,7 +2,7 @@ English | [简体中文](../zh-CN/README.md) | [日本語](../../../skills/expla
 
 # Samples
 
-This page lists the 22 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
+This page lists the 23 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
 
 The skill itself ships only the Japanese samples and their [Japanese list](../../../skills/explanatory-diagrams/samples/README.md). The agent reaches that list from [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) and borrows ways of showing things from the samples. The samples are examples of what can be expressed, not templates to fill in. This page is not part of the skill.
 
@@ -159,6 +159,12 @@ Example: logic decided by what happens after how many minutes, such as deadlines
 Example: show what a PR checks, one row per user, action, and condition. Group the rows by what they check, such as who can use the feature, which values are accepted, and the effect on other screens. Give each row an expected result and how it is checked, and use chips to tell automated tests (with their layer) from checks a person does in an environment. For rows a person checks, add the steps in small text under the expected result. This sample gives the chips for manual checks an orange border.
 
 ![Table of test items for the cancel-order API, grouped into who can cancel, which orders can be canceled, refund and stock, and effect on other screens](test-items.drawio.svg)
+
+### Concept diagram split by place and role
+
+Example: explaining the overall shape of a system by where each thing lives (bands) and what kind of thing it is (shapes). Every band has its name at the top right, and the bands share columns, so the same role (what it is given, what does the work, what it produces) sits in the same column in each band. Square boxes are documents or data, rounded boxes with a thick border do work, and dotted frames group things of one kind. There are only three kinds of lines (reads or passes, uses, written by a person), and they never cross. No icons are used, and what each shape and line means is listed under "How to read this" at the bottom. The rules and their sources are in [practices/layers-and-shapes](../../../skills/explanatory-diagrams/practices/layers-and-shapes/README.md) (in Japanese).
+
+![Concept diagram of a reply-drafting AI and its evaluation, split into three bands: where it starts, shown to the AI, and hidden from the AI](concept-layers.drawio.svg)
 
 ## Adding a sample
 
