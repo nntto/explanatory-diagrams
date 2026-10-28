@@ -51,7 +51,7 @@ draw.io は PNG などの画像を図の中に埋め込める。図形で描き�
 
 大きさ、配色、線と記号の規約は [references/drawio-style.md](references/drawio-style.md) にある。
 
-凡例と直接ラベルの使い分けのように、図を読みやすくする作法とその根拠は [practices/README.md](practices/README.md) にある。
+凡例と直接ラベルの使い分けや、形・線・置き場所の意味のそろえ方のように、図を読みやすくする作法とその根拠は [practices/README.md](practices/README.md) にある。
 
 `samples/` の `.drawio.svg` は、この skill でどんな表現ができるかを示すサンプル。一覧と、それぞれが示している表現は [samples/README.md](samples/README.md) にある。サンプルは、変更前後の比べ方のような「見せ方」、それをよくあるリファクタリングに当てはめた「リファクタリングの説明」、構成図やシーケンス図のような「図の種類」に分かれている。
 
