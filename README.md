@@ -14,9 +14,9 @@ Text-based tools like Mermaid are lightweight, but they lay out a fixed set of d
 
 ## Examples
 
-23 samples show what the skill can express. They are not templates to fill in: the agent builds each diagram around what it explains, borrowing techniques from the samples.
+22 samples show what the skill can express. They are not templates to fill in: the agent builds each diagram around what it explains, borrowing techniques from the samples.
 
-- **[Sample List (23 samples)](docs/samples/en/README.md)**: Architecture diagrams, sequence diagrams, state machines, ER diagrams, before/after UI comparisons, and more.
+- **[Sample List (22 samples)](docs/samples/en/README.md)**: Architecture diagrams, sequence diagrams, state machines, ER diagrams, before/after UI comparisons, and more.
 
 ### AWS Architecture
 
