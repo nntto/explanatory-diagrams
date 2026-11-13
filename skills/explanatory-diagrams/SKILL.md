@@ -49,7 +49,7 @@ draw.io は PNG などの画像を図の中に埋め込める。図形で描き�
 
 ## この skill が渡すもの
 
-大きさ、配色、線と記号の規約は [references/drawio-style.md](references/drawio-style.md) にある。変更前と変更後を並べる図で、同じ項目の値を同じ位置にそろえ、片方にしかない項目の位置を空の点線の枠で空ける決まりも、ここの「図の組み立て」にある。
+図の組み立て、大きさ、配色、線と記号の規約は [references/drawio-style.md](references/drawio-style.md) にある。
 
 凡例と直接ラベルの使い分けのように、図を読みやすくする作法とその根拠は [practices/README.md](practices/README.md) にある。
 
