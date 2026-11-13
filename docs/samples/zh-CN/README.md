@@ -2,7 +2,7 @@
 
 # 样例列表
 
-本页列出 22 个样例及各自展示的表现方式。它们是 skill 中日语样例的简体中文版：布局与日语版相同，只翻译了文字。design-before-after 样例中嵌入的界面截图仍是日语。
+本页列出 23 个样例及各自展示的表现方式。它们是 skill 中日语样例的简体中文版：布局与日语版相同，只翻译了文字。design-before-after 样例中嵌入的界面截图仍是日语。
 
 skill 本身只包含日语样例和[日语列表](../../../skills/explanatory-diagrams/samples/README.md)。agent 从 [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) 找到这份列表，从样例中借鉴表现方式。样例是展示能画出什么的示例，不是套用的模板。本页不包含在 skill 中。
 
@@ -59,6 +59,12 @@ skill 本身只包含日语样例和[日语列表](../../../skills/explanatory-d
 示例：在重构或比较设计方案时，想展示下次新增功能时改动更少的变更。假设新增同一个功能，把变更前和变更后要写的文件和行，用代码片段左右并排。只给要加的行加上色带，按编写顺序编号，消失的文件画成虚线框。要改的文件数和要加的行数，在下方的表中以“变更前 → 变更后”汇总。本样例用橙色色带标出变更前要加的行，用蓝色色带标出变更后要加的行。
 
 ![用代码片段左右并排去掉 ProductPage 前后、在商品列表中新增“复制”Server Action 时要写的行，标题为“去掉 ProductPage 后，新增 1 个 Server Action 要写的行减半”](before-after-edit-points.drawio.svg)
+
+### 对比变更前后的 API 规格
+
+示例：新增端点、删除响应字段、新增错误等改变 API 规格的变更。把端点画成按 OpenAPI 的术语（Path parameters・Request body・Response 200・Errors）分区的卡片，左右并排变更前和变更后。卡片标题是方法徽标、路径和 Auth 行，正文是名称・类型・说明 3 列的行，嵌套用缩进表示。同一行在左右两侧对齐到相同高度；只在一侧存在的行或端点，在另一侧的相同位置放一个空的点线框留出位置（见 [references/drawio-style.md](../../../skills/explanatory-diagrams/references/drawio-style.md) 的「図の組み立て」，日语）。框的标题写明变更前指哪个时间点（“Before：……之后”）和“After：本 PR”。本样例用蓝色表示新增的行，用灰色虚线框和删除线表示删除的行，并在删除行的说明列中用粗体保留“删除”和去向。
+
+![按 OpenAPI 术语分区的订单详情 API 卡片左右并排，展示把内部备注和成本字段从会员 API 移到仅管理员可用的 GET /admin/orders/{order_id}](api-before-after.drawio.svg)
 
 ## 重构的说明
 
