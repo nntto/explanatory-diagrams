@@ -49,7 +49,7 @@ draw.io は PNG などの画像を図の中に埋め込める。図形で描き�
 
 ## この skill が渡すもの
 
-大きさ、配色、線と記号の規約は [references/drawio-style.md](references/drawio-style.md) にある。
+図の組み立て、大きさ、配色、線と記号の規約は [references/drawio-style.md](references/drawio-style.md) にある。
 
 凡例と直接ラベルの使い分けのように、図を読みやすくする作法とその根拠は [practices/README.md](practices/README.md) にある。
 
