@@ -2,7 +2,7 @@ English | [简体中文](../zh-CN/README.md) | [日本語](../../../skills/expla
 
 # Samples
 
-This page lists the 23 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
+This page lists the 24 samples and what each one shows. They are English versions of the Japanese samples in the skill: the layout is the same, and only the text is translated. The screenshots embedded in the design-before-after sample are still in Japanese.
 
 The skill itself ships only the Japanese samples and their [Japanese list](../../../skills/explanatory-diagrams/samples/README.md). The agent reaches that list from [SKILL.md](../../../skills/explanatory-diagrams/SKILL.md) and borrows ways of showing things from the samples. The samples are examples of what can be expressed, not templates to fill in. This page is not part of the skill.
 
@@ -59,6 +59,12 @@ Example: changes where the change in amount is the point, such as lines of code.
 Example: refactorings or design options where the point is that the next feature takes fewer edits. Take one feature to add, and put the files and lines you would write before and after the change side by side as code snippets. Shade only the lines to add, number the files in the order you edit them, and draw files that go away as dashed outlines. Sum up the number of files and lines to edit in a table below, as "before → after". This sample shades the lines to add before the change in orange and after the change in blue.
 
 ![Code snippets side by side showing the lines to write to add a "Duplicate" Server Action to the product list, before and after removing ProductPage, titled "Drop ProductPage, and adding a Server Action takes half the lines"](before-after-edit-points.drawio.svg)
+
+### Compare code with aligned rows
+
+Example: design changes where you want to show how the code you write to add one item, and the code that runs when called, change. Put code snippets from before and after side by side, and align them in rows by where the code lives (definition, label, color, and so on). Put the rows written each time an item is added at the top, and the rows written once at the bottom. Cut each row down to the lines written for the example. Color and bold only the words that differ between before and after, and leave the rest in gray. Explain each snippet in one line below it, not in code comments. When a row exists on only one side, put an empty dotted box at the same position on the other side. "Compare what you write to add one feature" counts files and lines to compare the effort; this one compares how the code is written, row by row. This sample shows the words that differ in orange before the change and in blue after it.
+
+![Code side by side in aligned rows, showing what to write to add an "On hold" order status, before and after moving the label, color, and allowed next statuses into one status definition](before-after-code-layers.drawio.svg)
 
 ### Compare API specs before and after
 
